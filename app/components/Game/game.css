@@ -1,0 +1,94 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  height: 100%;
+  position: relative;
+  justify-content: center;
+}
+.game-header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: 0px;
+}
+
+.game-title {
+  font-size: 16px;
+  margin: 0px;
+}
+.game-anwsers-info {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0px;
+  margin-top: 10px;
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Automatically create 4 equal columns */
+  margin: 10px;
+  gap: 10px;
+  align-self: center;
+  justify-self: center;
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  padding: 10px;
+  gap: 10px;
+  align-self: center;
+  justify-self: center;
+}
+
+.grid-item {
+  background-repeat: no-repeat;
+  background-size: contain; /* Maintain aspect ratio of background images */
+  width: 20vw; /* 20% of the viewport width */
+  height: 20vw; /* 20% of the viewport width to keep it square */
+  max-width: 100px; /* Limit the size on larger screens */
+  max-height: 100px;
+  font-size: 4vw; /* Font size proportional to viewport width */
+  display: flex;
+  align-items: center;
+  color: white;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  .grid-item {
+    width: 22vw;
+    height: 22vw;
+    font-size: 5vw; /* Slightly larger font size */
+    max-width: 80px; /* Adjust max sizes for smaller screens */
+    max-height: 80px;
+  }
+}
+
+/* Medium screens */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .grid-item {
+    width: 18vw;
+    height: 18vw;
+    font-size: 3.5vw;
+    max-width: 90px;
+    max-height: 90px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1024px) {
+  .grid-item {
+    width: 10vw;
+    height: 10vw;
+    max-width: 80px;
+    max-height: 80px;
+    font-size: 2.5vw; /* Decrease font size for larger screens */
+  }
+}
