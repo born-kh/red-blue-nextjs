@@ -10,6 +10,7 @@ import {
   useUtils,
   useViewport,
 } from '@tma.js/sdk-react';
+import Result from '../Result';
 type Button = [string, string];
 
 const buttons: Button[] = [
@@ -73,8 +74,7 @@ function Game() {
   const [buttons, setButtons] = useState<Button[]>([]);
   const storage = useCloudStorage();
   const popup = usePopup();
-  const userData = useInitData();
-  const utils = useUtils();
+
   const [showButtons, setShowButtons] = useState(true);
   const [effect, setEffect] = useState(false);
 
@@ -83,9 +83,14 @@ function Game() {
   const [money, setMoney] = useState(() => {
     return 0;
   });
+  const [showResult, setShowResult] = useState(false);
   useEffect(() => {
     setButtons(generateButtons(showCountButtons));
-    storage.get('money').then((result) => setMoney(Number(result || '0')));
+    storage.get('money').then((result) => {
+      const money = Number(result || '0');
+      setMoney(money);
+      setShowResult(true);
+    });
   }, [showCountButtons]);
 
   const view = useViewport(true);
@@ -120,27 +125,25 @@ function Game() {
             { id: 'later', type: 'default', text: 'Да' },
           ],
         })
-        .then((buttonId) => {
-          console.log(
-            buttonId === null
-              ? 'User did not click any button'
-              : `User clicked a button with ID "${buttonId}"`
-          );
+        .then(() => {
+          setShowResult(true);
         });
     }
 
     view?.expand();
   }, [money, view]);
-
+  if (showResult) {
+    return <Result balance={money} />;
+  }
   return (
-    <div className="game">
-      <div className="game-header">
-        <p className="game-title">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
-        <p className="game-anwsers-info">Правилных ответов: {score}</p>
+    <div className="flex flex-1 items-center relative justify-center">
+      <div className="absolute flex flex-col gap-y-2 items-center top-1">
+        <p className="text-sm">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
+        <p className="text-lg">Правилных ответов: {score}</p>
       </div>
 
       {showButtons && (
-        <div className="game-container animate-fadeIn">
+        <div className="game-container animate-fadeIn transition ease-in-out delay-150">
           {buttons.map((button, index) => {
             let img = `/${button[0]}.png`;
             return (
@@ -160,15 +163,6 @@ function Game() {
           })}
         </div>
       )}
-      <button
-        onClick={() => {
-          utils.openTelegramLink(
-            `https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
-          );
-        }}
-      >
-        Invite
-      </button>
     </div>
   );
 }
