@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 import './game.css';
-import { useInitData, useUtils, useViewport } from '@tma.js/sdk-react';
+import { useCloudStorage, useInitData, usePopup, useUtils, useViewport } from '@tma.js/sdk-react';
 type Button = [string, string];
 
 const buttons: Button[] = [
@@ -64,8 +64,8 @@ function random3(ignore: number): number {
 
 function Game() {
 	const [buttons, setButtons] = useState<Button[]>([]);
-	// const storage = useCloudStorage();
-	// const popup = usePopup();
+	const storage = useCloudStorage();
+	const popup = usePopup();
 	const userData = useInitData();
 	const utils = useUtils();
 
@@ -75,41 +75,41 @@ function Game() {
 	});
 	useEffect(() => {
 		setButtons(generateButtons(4));
-		// storage.get('money').then((result) => setMoney(Number(result || '0')));
+		storage.get('money').then((result) => setMoney(Number(result || '0')));
 	}, []);
 
 	const view = useViewport(true);
 	const handleCellClick = (color: Button) => {
 		if (color[0].toLowerCase() === color[1].toLowerCase()) {
 			setScore((prev) => prev + 1);
-			if (score > 10) {
+			if (score > 1) {
 				setMoney((money) => {
-					// storage.set('money', String(money + 0.1));
-					return money + 0.1;
+					storage.set('money', String(money + 1));
+					return money + 1;
 				});
 			}
 		}
 		setButtons(generateButtons(4));
 	};
 	useEffect(() => {
-		// if (money >= 10) {
-		//   popup
-		//     .open({
-		//       title: 'Hello!',
-		//       message: 'Вы заработали 10 руб. Хотите выводить?',
-		//       buttons: [
-		//         { id: 'later', type: 'default', text: 'Позже' },
-		//         { id: 'later', type: 'default', text: 'Да' },
-		//       ],
-		//     })
-		//     .then((buttonId) => {
-		//       console.log(
-		//         buttonId === null
-		//           ? 'User did not click any button'
-		//           : `User clicked a button with ID "${buttonId}"`
-		//       );
-		//     });
-		// }
+		if (money >= 10) {
+			popup
+				.open({
+					title: 'Hello!',
+					message: 'Вы заработали 10 руб. Хотите выводить?',
+					buttons: [
+						{ id: 'later', type: 'default', text: 'Позже' },
+						{ id: 'later', type: 'default', text: 'Да' },
+					],
+				})
+				.then((buttonId) => {
+					console.log(
+						buttonId === null
+							? 'User did not click any button'
+							: `User clicked a button with ID "${buttonId}"`
+					);
+				});
+		}
 
 		view?.expand();
 	}, [money, view]);
