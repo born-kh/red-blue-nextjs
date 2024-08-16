@@ -117,7 +117,7 @@ function Game() {
 		};
 		getData()
 			.then((data) => {
-				alert(data.message);
+				console.log(data);
 			})
 			.catch((error) => {
 				console.log(error);
