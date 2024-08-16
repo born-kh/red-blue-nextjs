@@ -78,7 +78,7 @@ function Game() {
 		// storage.get('money').then((result) => setMoney(Number(result || '0')));
 	}, []);
 
-	const view = useViewport();
+	const view = useViewport(true);
 	const handleCellClick = (color: Button) => {
 		if (color[0].toLowerCase() === color[1].toLowerCase()) {
 			setScore((prev) => prev + 1);
@@ -110,6 +110,7 @@ function Game() {
 		//       );
 		//     });
 		// }
+
 		view?.expand();
 	}, [money]);
 
