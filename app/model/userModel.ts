@@ -6,7 +6,7 @@ const UserSchema: Schema = new Schema({
   last_name: String,
   photo_url: String,
   parent_id: Number,
-  chat_id: Number,
+  user_id: Number,
   active: Boolean,
 });
 
