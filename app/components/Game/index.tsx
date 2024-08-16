@@ -116,7 +116,7 @@ function Game() {
 			<button
 				onClick={() => {
 					utils.openTelegramLink(
-						`https://t.me/share/url?url=http://t.me/@red_blue_game_bot?start=fren=${userData?.user?.id}`
+						`https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
 					);
 				}}
 			>
