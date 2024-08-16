@@ -112,7 +112,7 @@ function Game() {
 		// }
 
 		view?.expand();
-	}, [money]);
+	}, [money, view]);
 
 	return (
 		<div className="game">

@@ -6,11 +6,11 @@ import UserModel from '@/app/model/userModel';
 import { NextResponse } from 'next/server';
 
 // To handle a GET request to /api
-export async function GET(request: any, { params }: { params: { id: string } }) {
-	// Do whatever you want
+export async function GET(request: any) {
+	const { id } = request.query;
 	await dbConnect();
 
-	const friends = await UserModel.find({ parent_id: params.id });
+	const friends = await UserModel.find({ parent_id: id });
 
 	return NextResponse.json({ friends }, { status: 200 });
 }
