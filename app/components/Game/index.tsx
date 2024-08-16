@@ -113,6 +113,10 @@ function Game() {
 
 	return (
 		<div className="game">
+			<div className="game-header">
+				<p className="game-title">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
+				<p className="game-anwsers-info">Правилных ответов: {score}</p>
+			</div>
 			<button
 				onClick={() => {
 					utils.openTelegramLink(
@@ -122,11 +126,6 @@ function Game() {
 			>
 				Invite
 			</button>
-			<div className="game-header">
-				<p className="game-title">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
-				<p className="game-anwsers-info">Правилных ответов: {score}</p>
-			</div>
-
 			<div className="game-container">
 				{buttons.map((button, index) => {
 					let img = `/${button[0]}.png`;
