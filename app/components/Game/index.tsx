@@ -119,15 +119,7 @@ function Game() {
 				<p className="game-title">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
 				<p className="game-anwsers-info">Правилных ответов: {score}</p>
 			</div>
-			<button
-				onClick={() => {
-					utils.openTelegramLink(
-						`https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
-					);
-				}}
-			>
-				Invite
-			</button>
+
 			<div className="game-container">
 				{buttons.map((button, index) => {
 					let img = `/${button[0]}.png`;
@@ -143,6 +135,16 @@ function Game() {
 					);
 				})}
 			</div>
+
+			<button
+				onClick={() => {
+					utils.openTelegramLink(
+						`https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
+					);
+				}}
+			>
+				Invite
+			</button>
 		</div>
 	);
 }
