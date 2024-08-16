@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-// import { useCloudStorage, useMainButton, usePopup } from '@telegram-apps/sdk-react';
 import './game.css';
+import { useInitData, useUtils } from '@tma.js/sdk-react';
 type Button = [string, string];
 
 const buttons: Button[] = [
@@ -66,7 +66,8 @@ function Game() {
 	const [buttons, setButtons] = useState<Button[]>([]);
 	// const storage = useCloudStorage();
 	// const popup = usePopup();
-	// const mainButton = useMainButton();
+	const userData = useInitData();
+	const utils = useUtils();
 
 	const [score, setScore] = useState(0);
 	const [money, setMoney] = useState(() => {
@@ -108,24 +109,19 @@ function Game() {
 		//       );
 		//     });
 		// }
-
-		const getData = async () => {
-			const response = await fetch('/api/db', {
-				method: 'GET',
-			});
-			return response.json();
-		};
-		getData()
-			.then((data) => {
-				console.log(data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
 	}, [money]);
 
 	return (
 		<div className="game">
+			<button
+				onClick={() => {
+					utils.openTelegramLink(
+						`https://t.me/share/url?url=http://t.me/@red_blue_game_bot?start=fren=${userData?.user?.id}`
+					);
+				}}
+			>
+				Invite
+			</button>
 			<div className="game-header">
 				<p className="game-title">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
 				<p className="game-anwsers-info">Правилных ответов: {score}</p>
