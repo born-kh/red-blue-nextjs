@@ -1,12 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Game from './components/Game';
+import { useInitData } from '@tma.js/sdk-react';
 
 export default function Home() {
+	const userData = useInitData();
 	const [friends, setFriends] = useState<any[]>([]);
 	useEffect(() => {
 		const getData = async () => {
-			const response = await fetch('/api/db', {
+			const response = await fetch(`/api/db${userData?.user?.id}`, {
 				method: 'GET',
 			});
 			return response.json();
