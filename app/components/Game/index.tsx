@@ -82,12 +82,12 @@ function Game() {
 	const handleCellClick = (color: Button) => {
 		if (color[0].toLowerCase() === color[1].toLowerCase()) {
 			setScore((prev) => prev + 1);
-			if (score > 1) {
-				setMoney((money) => {
-					storage.set('money', String(money + 1));
-					return money + 1;
-				});
-			}
+			// if (score > 1) {
+			setMoney((money) => {
+				storage.set('money', String(money + 1));
+				return money + 1;
+			});
+			// }
 		}
 		setButtons(generateButtons(4));
 	};
