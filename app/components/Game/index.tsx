@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 import './game.css';
-import { useInitData, useUtils } from '@tma.js/sdk-react';
+import { useInitData, useUtils, useViewport } from '@tma.js/sdk-react';
 type Button = [string, string];
 
 const buttons: Button[] = [
@@ -78,6 +78,7 @@ function Game() {
 		// storage.get('money').then((result) => setMoney(Number(result || '0')));
 	}, []);
 
+	const view = useViewport();
 	const handleCellClick = (color: Button) => {
 		if (color[0].toLowerCase() === color[1].toLowerCase()) {
 			setScore((prev) => prev + 1);
@@ -109,6 +110,7 @@ function Game() {
 		//       );
 		//     });
 		// }
+		view?.expand();
 	}, [money]);
 
 	return (
