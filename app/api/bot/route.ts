@@ -15,7 +15,11 @@ bot.command('start', async (ctx) => {
   const message = ctx.message;
   await dbConnect();
 
-  const findUser = await UserModel.findOne({ user_id: ctx.chat.id });
+  const query = UserModel.findOne({ user_id: ctx.chat.id });
+
+  // execute the query at a later time
+  const findUser = await query.exec();
+  console.log(findUser);
   if (!findUser) {
     if (message) {
       if (message.text.includes('fren')) {
@@ -26,6 +30,7 @@ bot.command('start', async (ctx) => {
           first_name: ctx.chat.first_name,
           last_name: ctx.chat.last_name,
           chat_id: ctx.chat.id,
+          active: false,
         });
         user.save();
       }
