@@ -19,7 +19,7 @@
 body {
   text-align: center;
   background-image: url('/background.jpg');
-  height: 100vh;
+  height: 100%;
 }
 
 @layer utilities {

@@ -1,153 +1,176 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import './game.css';
-import { useCloudStorage, useInitData, usePopup, useUtils, useViewport } from '@tma.js/sdk-react';
+import {
+  useCloudStorage,
+  useInitData,
+  usePopup,
+  useSDK,
+  useUtils,
+  useViewport,
+} from '@tma.js/sdk-react';
 type Button = [string, string];
 
 const buttons: Button[] = [
-	['red', 'Red'],
-	['green', 'Green'],
-	['blue', 'Blue'],
-	['yellow', 'Yellow'],
+  ['red', 'Red'],
+  ['green', 'Green'],
+  ['blue', 'Blue'],
+  ['yellow', 'Yellow'],
 ];
 
 function generateButtons(size: number): Button[] {
-	const rand16: number[] = [];
-	const generated: number[] = [];
-	const list: Button[] = Array(16).fill(['grey', '']);
+  const rand16: number[] = [];
+  const generated: number[] = [];
+  const list: Button[] = Array(16).fill(['grey', '']);
 
-	for (let i = 1; i <= size; i++) {
-		const rand = random4(generated);
-		generated.push(rand);
-		let btn: Button = buttons[rand];
+  for (let i = 1; i <= size; i++) {
+    const rand = random4(generated);
+    generated.push(rand);
+    let btn: Button = buttons[rand];
 
-		if (i > 1) {
-			const wrong = random3(rand);
-			btn = [btn[0], buttons[wrong][1]];
-		}
+    if (i > 1) {
+      const wrong = random3(rand);
+      btn = [btn[0], buttons[wrong][1]];
+    }
 
-		const pos = random16(rand16);
-		rand16.push(pos);
-		list[pos] = [btn[0], btn[1]];
-	}
+    const pos = random16(rand16);
+    rand16.push(pos);
+    list[pos] = [btn[0], btn[1]];
+  }
 
-	return list;
+  return list;
 }
 
 function random16(generated: number[]): number {
-	while (true) {
-		const rnd = Math.floor(Math.random() * 16);
-		if (!generated.includes(rnd)) {
-			return rnd;
-		}
-	}
+  while (true) {
+    const rnd = Math.floor(Math.random() * 16);
+    if (!generated.includes(rnd)) {
+      return rnd;
+    }
+  }
 }
 
 function random4(generated: number[]): number {
-	while (true) {
-		const rnd = Math.floor(Math.random() * 4);
-		if (generated.length >= 4 || !generated.includes(rnd)) {
-			return rnd;
-		}
-	}
+  while (true) {
+    const rnd = Math.floor(Math.random() * 4);
+    if (generated.length >= 4 || !generated.includes(rnd)) {
+      return rnd;
+    }
+  }
 }
 
 function random3(ignore: number): number {
-	while (true) {
-		const rnd = Math.floor(Math.random() * 4);
-		if (ignore !== rnd) {
-			return rnd;
-		}
-	}
+  while (true) {
+    const rnd = Math.floor(Math.random() * 4);
+    if (ignore !== rnd) {
+      return rnd;
+    }
+  }
 }
 
 function Game() {
-	const [buttons, setButtons] = useState<Button[]>([]);
-	const storage = useCloudStorage();
-	const popup = usePopup();
-	const userData = useInitData();
-	const utils = useUtils();
+  const [buttons, setButtons] = useState<Button[]>([]);
+  const storage = useCloudStorage();
+  const popup = usePopup();
+  const userData = useInitData();
+  const utils = useUtils();
+  const [showButtons, setShowButtons] = useState(true);
+  const [effect, setEffect] = useState(false);
 
-	const [score, setScore] = useState(0);
-	const [money, setMoney] = useState(() => {
-		return 0;
-	});
-	useEffect(() => {
-		setButtons(generateButtons(4));
-		storage.get('money').then((result) => setMoney(Number(result || '0')));
-	}, []);
+  const [score, setScore] = useState(0);
+  const [showCountButtons, setShowCountButtons] = useState(4);
+  const [money, setMoney] = useState(() => {
+    return 0;
+  });
+  useEffect(() => {
+    setButtons(generateButtons(showCountButtons));
+    storage.get('money').then((result) => setMoney(Number(result || '0')));
+  }, [showCountButtons]);
 
-	const view = useViewport(true);
-	const handleCellClick = (color: Button) => {
-		if (color[0].toLowerCase() === color[1].toLowerCase()) {
-			setScore((prev) => prev + 1);
-			// if (score > 1) {
-			setMoney((money) => {
-				storage.set('money', String(money + 1));
-				return money + 1;
-			});
-			// }
-		}
-		setButtons(generateButtons(4));
-	};
-	useEffect(() => {
-		if (money >= 10) {
-			popup
-				.open({
-					title: 'Hello!',
-					message: 'Вы заработали 10 руб. Хотите выводить?',
-					buttons: [
-						{ id: 'later', type: 'default', text: 'Позже' },
-						{ id: 'later', type: 'default', text: 'Да' },
-					],
-				})
-				.then((buttonId) => {
-					console.log(
-						buttonId === null
-							? 'User did not click any button'
-							: `User clicked a button with ID "${buttonId}"`
-					);
-				});
-		}
+  const view = useViewport(true);
+  const handleCellClick = useCallback(
+    (color: Button) => {
+      setShowButtons(false);
+      if (color[0].toLowerCase() === color[1].toLowerCase()) {
+        setScore((prev) => prev + 1);
+        if (score > 1) {
+          setMoney((money) => {
+            storage.set('money', String(money + 1));
+            return money + 1;
+          });
+        }
+      }
+      setButtons(generateButtons(4));
+      setTimeout(() => {
+        setShowButtons(true);
+      }, 500);
+    },
 
-		view?.expand();
-	}, [money, view]);
+    [showCountButtons, score]
+  );
+  useEffect(() => {
+    if (money >= 10) {
+      popup
+        .open({
+          title: 'Hello!',
+          message: 'Вы заработали 10 руб. Хотите выводить?',
+          buttons: [
+            { id: 'later', type: 'default', text: 'Позже' },
+            { id: 'later', type: 'default', text: 'Да' },
+          ],
+        })
+        .then((buttonId) => {
+          console.log(
+            buttonId === null
+              ? 'User did not click any button'
+              : `User clicked a button with ID "${buttonId}"`
+          );
+        });
+    }
 
-	return (
-		<div className="game">
-			<div className="game-header">
-				<p className="game-title">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
-				<p className="game-anwsers-info">Правилных ответов: {score}</p>
-			</div>
+    view?.expand();
+  }, [money, view]);
 
-			<div className="game-container">
-				{buttons.map((button, index) => {
-					let img = `/${button[0]}.png`;
-					return (
-						<div
-							style={{ backgroundImage: `url(${img})` }}
-							className="grid-item"
-							key={index}
-							onClick={() => handleCellClick(button)}
-						>
-							{button[1]}
-						</div>
-					);
-				})}
-			</div>
+  return (
+    <div className="game">
+      <div className="game-header">
+        <p className="game-title">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
+        <p className="game-anwsers-info">Правилных ответов: {score}</p>
+      </div>
 
-			<button
-				onClick={() => {
-					utils.openTelegramLink(
-						`https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
-					);
-				}}
-			>
-				Invite
-			</button>
-		</div>
-	);
+      {showButtons && (
+        <div className="game-container animate-fadeIn">
+          {buttons.map((button, index) => {
+            let img = `/${button[0]}.png`;
+            return (
+              <div
+                style={{ backgroundImage: `url(${img})` }}
+                key={index}
+                onClick={() => {
+                  handleCellClick(button);
+                  setEffect(true);
+                }}
+                className={`${effect && 'animate-wiggle'} grid-item`}
+                onAnimationEnd={() => setEffect(false)}
+              >
+                {button[1]}
+              </div>
+            );
+          })}
+        </div>
+      )}
+      <button
+        onClick={() => {
+          utils.openTelegramLink(
+            `https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
+          );
+        }}
+      >
+        Invite
+      </button>
+    </div>
+  );
 }
 
 export default Game;
