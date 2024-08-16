@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { TmaSDKProvider } from './components/tma';
+
+import dynamic from 'next/dynamic';
+
+const TmaSDKProvider = dynamic(() => import('./components/tma').then((mod) => mod.TmaSDKProvider), { ssr: false });
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,7 +21,6 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				{' '}
 				<TmaSDKProvider>{children}</TmaSDKProvider>
 			</body>
 		</html>
