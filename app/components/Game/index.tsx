@@ -77,7 +77,7 @@ function random3(ignore: number): number {
 
 function Game() {
   const [buttons, setButtons] = useState<Button[]>([]);
-
+  const userData = useInitData();
   const popup = usePopup();
   const increment = useRef(0);
   const showCountButtons = useRef(4);
@@ -143,20 +143,20 @@ function Game() {
     [showCountButtons, score]
   );
   useEffect(() => {
-    if (score >= 1 && !showResult) {
-      popup
-        .open({
-          title: 'Hello!',
-          message: 'Вы заработали 10 руб. Хотите выводить?',
-          buttons: [
-            { id: 'later', type: 'default', text: 'Позже' },
-            { id: 'later', type: 'default', text: 'Да' },
-          ],
-        })
-        .finally(() => {
-          setShowResult(true);
-        });
-    }
+    // if (score >= 1 && !showResult) {
+    //   popup
+    //     .open({
+    //       title: 'Hello!',
+    //       message: 'Вы заработали 10 руб. Хотите выводить?',
+    //       buttons: [
+    //         { id: 'later', type: 'default', text: 'Позже' },
+    //         { id: 'later', type: 'default', text: 'Да' },
+    //       ],
+    //     })
+    //     .finally(() => {
+    //       setShowResult(true);
+    //     });
+    // }
   }, [score, showResult]);
   useEffect(() => {
     if (progress <= 0) {
@@ -179,7 +179,7 @@ function Game() {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              <p className="text-sm">Nikandr (CEO)</p>
+              <p className="text-sm">{`${userData?.user?.firstName} ${userData?.user?.lastName}`}</p>
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
