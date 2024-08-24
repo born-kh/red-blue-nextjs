@@ -5,7 +5,7 @@ import './game.css';
 
 import Result from '../Result';
 import useSound from 'use-sound';
-import { useCloudStorage, useInitData, usePopup } from '@tma.js/sdk-react';
+import { useInitData, usePopup } from '@tma.js/sdk-react';
 
 type Button = [string, string];
 
@@ -26,7 +26,6 @@ function generateButtons(size: number): Button[] {
   const rand16: number[] = [];
   const generated: number[] = [];
   const list: Button[] = Array(16).fill(['grey', '']);
-  const popup = usePopup();
 
   for (let i = 1; i <= size; i++) {
     const rand = random4(generated);

@@ -11,7 +11,7 @@ export default function ({ balance }: { balance: number }) {
       <div className="flex flex-row self-end">
         {' '}
         <div className="flex-row flex items-center gap-x-2">
-          <span>Ваш баланс {balance} руб</span>
+          <span>Ваш баланс {10} руб</span>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Выводить
           </button>
