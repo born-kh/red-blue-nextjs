@@ -76,8 +76,6 @@ function random3(ignore: number): number {
 function Game() {
   const [buttons, setButtons] = useState<Button[]>([]);
 
-  const storage = useCloudStorage();
-
   const popup = usePopup();
   const increment = useRef(0);
   const initData = useInitData();
