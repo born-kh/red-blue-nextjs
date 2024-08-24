@@ -1,11 +1,11 @@
 'use client';
 
-import { useTelegram } from '@/app/lib/TelegramProvider';
+import { useInitData, useUtils } from '@tma.js/sdk-react';
 import Referals from '../Referals';
 
 export default function ({ balance }: { balance: number }) {
-  const { user, webApp } = useTelegram();
-
+  const initData = useInitData();
+  const utils = useUtils();
   return (
     <div className="flex flex-col flex-grow gap-2 items-start">
       <div className="flex flex-row self-end">
@@ -20,7 +20,7 @@ export default function ({ balance }: { balance: number }) {
       <div className="flex flex-row items-center justify-between gap-2 mt-6">
         <button
           onClick={() => {
-            webApp.openTelegramLink(`https://t.me/TezTezDiscussion`);
+            utils.openTelegramLink(`https://t.me/TezTezDiscussion`);
           }}
           className="bg-blue-500 w-fit hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
@@ -29,8 +29,8 @@ export default function ({ balance }: { balance: number }) {
         <button
           className="bg-blue-500 w-fit hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
-            webApp.openTelegramLink(
-              `https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${user?.id}`
+            utils.openTelegramLink(
+              `https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${initData?.user?.id}`
             );
           }}
         >

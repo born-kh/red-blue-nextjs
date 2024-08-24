@@ -1,26 +1,28 @@
-import { useTelegram } from '@/app/lib/TelegramProvider';
+import { useInitData } from '@tma.js/sdk-react';
 import { useEffect, useState } from 'react';
 
 const Referals = () => {
   const [openTab, setOpenTab] = useState(1);
   const [friends, setFriends] = useState<any[]>([]);
-  const { webApp, user } = useTelegram();
+  const initData = useInitData();
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch(`/api/referals?id=${user?.id}`, {
+      const response = await fetch(`/api/referals?id=${initData?.user?.id}`, {
         method: 'GET',
       });
       return response.json();
     };
-    getData()
-      .then((data) => {
-        console.log(data);
-        setFriends(data.friends as any);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [user]);
+    if (initData?.user) {
+      getData()
+        .then((data) => {
+          console.log(data);
+          setFriends(data.friends as any);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [initData]);
   return (
     <>
       <div className="flex flex-wrap w-full">

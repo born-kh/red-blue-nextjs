@@ -1,13 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Game from './components/Game';
-import { useTelegram } from './lib/TelegramProvider';
+import { useViewport } from '@tma.js/sdk-react';
 
 export default function Home() {
-  const { webApp } = useTelegram();
+  const view = useViewport();
   useEffect(() => {
-    webApp?.expand();
-  }, [webApp]);
+    view?.expand();
+  }, [view]);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between m-8">
       <Game />

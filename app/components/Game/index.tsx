@@ -5,7 +5,7 @@ import './game.css';
 
 import Result from '../Result';
 import useSound from 'use-sound';
-import { useTelegram } from '@/app/lib/TelegramProvider';
+import { useInitData, usePopup } from '@tma.js/sdk-react';
 
 type Button = [string, string];
 
@@ -26,6 +26,7 @@ function generateButtons(size: number): Button[] {
   const rand16: number[] = [];
   const generated: number[] = [];
   const list: Button[] = Array(16).fill(['grey', '']);
+  const popup = usePopup();
 
   for (let i = 1; i <= size; i++) {
     const rand = random4(generated);
@@ -76,10 +77,9 @@ function Game() {
   const [buttons, setButtons] = useState<Button[]>([]);
 
   // const storage = useCloudStorage();
-  // const popup = usePopup();
+  const popup = usePopup();
   const increment = useRef(0);
-  const { user, webApp } = useTelegram();
-
+  const initData = useInitData();
   const showCountButtons = useRef(4);
   const [showButtons, setShowButtons] = useState(true);
   const [effect, setEffect] = useState(false);
@@ -93,14 +93,16 @@ function Game() {
   const [showResult, setShowResult] = useState(false);
   useEffect(() => {
     setButtons(generateButtons(showCountButtons.current));
-    const score = Number(localStorage.getItem(user?.id ? user.id.toString() : 'score') || '0');
+    const score = Number(
+      localStorage.getItem(initData?.user ? initData.user.id.toString() : 'score') || '0'
+    );
     setScore(score);
     if (score >= 10) {
       setShowResult(true);
     } else {
       playGame();
     }
-  }, [showCountButtons, playGame, user]);
+  }, [showCountButtons, playGame, initData]);
 
   const handleCellClick = useCallback(
     (color: Button) => {
@@ -116,7 +118,10 @@ function Game() {
         playSuccess();
         setScore((prev) => {
           const score = prev + 1;
-          localStorage.setItem(user?.id ? user.id.toString() : 'score', score.toString());
+          localStorage.setItem(
+            initData?.user?.id ? initData.user.id.toString() : 'score',
+            score.toString()
+          );
           return score;
         });
       } else {
@@ -132,18 +137,18 @@ function Game() {
   );
   useEffect(() => {
     if (score >= 10 && !showResult) {
-      // popup
-      //   .open({
-      //     title: 'Hello!',
-      //     message: 'Вы заработали 10 руб. Хотите выводить?',
-      //     buttons: [
-      //       { id: 'later', type: 'default', text: 'Позже' },
-      //       { id: 'later', type: 'default', text: 'Да' },
-      //     ],
-      //   })
-      //   .then(() => {
-      //     setShowResult(true);
-      //   });
+      popup
+        .open({
+          title: 'Hello!',
+          message: 'Вы заработали 10 руб. Хотите выводить?',
+          buttons: [
+            { id: 'later', type: 'default', text: 'Позже' },
+            { id: 'later', type: 'default', text: 'Да' },
+          ],
+        })
+        .finally(() => {
+          setShowResult(true);
+        });
     }
   }, [score, showResult]);
   if (showResult) {
