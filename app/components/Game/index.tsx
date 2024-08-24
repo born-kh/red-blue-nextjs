@@ -111,7 +111,7 @@ function Game() {
       clearInterval(progressInterval.current);
       progressInterval.current = setInterval(() => {
         setProgress((prev) => prev - 10);
-      }, 500);
+      }, 800);
 
       playClick();
 
@@ -189,7 +189,7 @@ function Game() {
               <div className="flex-1 text-center">
                 <p className="text-xs text-[#85827d] font-medium"></p>
                 <div className="flex items-center justify-center space-x-1">
-                  <p className="text-sm">{score.toFixed(2)}</p>
+                  <p className="text-sm">{score.toFixed(1)}</p>
                   <CurrencyRub size={20} />
                 </div>
               </div>
