@@ -110,8 +110,8 @@ function Game() {
       setProgress(100);
       clearInterval(progressInterval.current);
       progressInterval.current = setInterval(() => {
-        setProgress((prev) => prev - 5);
-      }, 350);
+        setProgress((prev) => prev - 1);
+      }, 70);
 
       playClick();
 
