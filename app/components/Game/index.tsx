@@ -144,6 +144,7 @@ function Game() {
   );
   useEffect(() => {
     if (score >= 1 && !showResult) {
+      clearInterval(progressInterval.current);
       popup
         .open({
           title: '',
