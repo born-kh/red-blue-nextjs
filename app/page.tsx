@@ -9,7 +9,7 @@ export default function Home() {
     view?.expand();
   }, [view]);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between m-8">
+    <main className="flex min-h-screen flex-col items-center justify-between ">
       <Game />
     </main>
   );
