@@ -216,9 +216,15 @@ function Game() {
               <div className="flex flex-1 flex-col items-center relative justify-center w-full">
                 <div className=" flex flex-col gap-y-2 items-center top-1 w-full px-2">
                   {gameStart ? (
-                    <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
+                    <div
+                      className="flex w-full h-2.5 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700"
+                      role="progressbar"
+                      aria-valuenow={progress}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                    >
                       <div
-                        className="bg-green-600 h-2.5 rounded-full "
+                        className="flex flex-col justify-center rounded-full overflow-hidden bg-teal-500 text-xs text-white text-center whitespace-nowrap transition duration-500"
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>
