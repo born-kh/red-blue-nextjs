@@ -91,15 +91,14 @@ function Game() {
   const [showResult, setShowResult] = useState(false);
   useEffect(() => {
     setButtons(generateButtons(showCountButtons.current));
-    // const score = Number(
-    //   localStorage.getItem(initData?.user ? initData.user.id.toString() : 'score') || '0'
-    // );
-    // setScore(score);
-    // if (score >= 10) {
-    //   setShowResult(true);
-    // } else {
-    //   playGame();
-    // }
+    const score = Number(
+      localStorage.getItem(initData?.user ? initData.user.id.toString() : 'score') || '0'
+    );
+    setScore(score);
+    if (score >= 10) {
+      setShowResult(true);
+    }
+    playGame();
   }, [showCountButtons, playGame, initData]);
 
   const handleCellClick = useCallback(
@@ -116,10 +115,10 @@ function Game() {
         playSuccess();
         setScore((prev) => {
           const score = prev + 1;
-          // localStorage.setItem(
-          //   initData?.user?.id ? initData.user.id.toString() : 'score',
-          //   score.toString()
-          // );
+          localStorage.setItem(
+            initData?.user?.id ? initData.user.id.toString() : 'score',
+            score.toString()
+          );
           return score;
         });
       } else {
