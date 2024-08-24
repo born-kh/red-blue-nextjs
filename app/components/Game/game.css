@@ -65,7 +65,7 @@
   .grid-item {
     width: 22vw;
     height: 22vw;
-    font-size: 5vw; /* Slightly larger font size */
+    font-size: 4vw; /* Slightly larger font size */
     max-width: 80px; /* Adjust max sizes for smaller screens */
     max-height: 80px;
   }
@@ -76,7 +76,7 @@
   .grid-item {
     width: 18vw;
     height: 18vw;
-    font-size: 3.5vw;
+    font-size: 2.5vw;
     max-width: 90px;
     max-height: 90px;
   }

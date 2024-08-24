@@ -1,16 +1,12 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import './game.css';
-import {
-  useCloudStorage,
-  useInitData,
-  usePopup,
-  useSDK,
-  useUtils,
-  useViewport,
-} from '@tma.js/sdk-react';
+
 import Result from '../Result';
+import useSound from 'use-sound';
+import { useTelegram } from '@/app/lib/TelegramProvider';
+
 type Button = [string, string];
 
 const buttons: Button[] = [
@@ -19,6 +15,12 @@ const buttons: Button[] = [
   ['blue', 'Blue'],
   ['yellow', 'Yellow'],
 ];
+const colorNames: any = {
+  Red: 'Красный',
+  Green: 'Зеленый',
+  Blue: 'Синий',
+  Yellow: 'Желтый',
+};
 
 function generateButtons(size: number): Button[] {
   const rand16: number[] = [];
@@ -72,41 +74,55 @@ function random3(ignore: number): number {
 
 function Game() {
   const [buttons, setButtons] = useState<Button[]>([]);
-  const storage = useCloudStorage();
-  const popup = usePopup();
 
+  // const storage = useCloudStorage();
+  // const popup = usePopup();
+  const increment = useRef(0);
+  const { user, webApp } = useTelegram();
+
+  const showCountButtons = useRef(4);
   const [showButtons, setShowButtons] = useState(true);
   const [effect, setEffect] = useState(false);
 
   const [score, setScore] = useState(0);
-  const [showCountButtons, setShowCountButtons] = useState(4);
-  const [money, setMoney] = useState(() => {
-    return 0;
-  });
+  const [playClick] = useSound('/click.mp3');
+  const [playGame] = useSound('/game_process.mp3', { volume: 0.25 });
+  const [playSuccess] = useSound('/success.mp3');
+  const [playWrong] = useSound('/wrong.mp3');
+
   const [showResult, setShowResult] = useState(false);
   useEffect(() => {
-    setButtons(generateButtons(showCountButtons));
-    storage.get('money').then((result) => {
-      const money = Number(result || '0');
-      setMoney(money);
+    setButtons(generateButtons(showCountButtons.current));
+    const score = Number(localStorage.getItem(user?.id ? user.id.toString() : 'score') || '0');
+    setScore(score);
+    if (score >= 10) {
       setShowResult(true);
-    });
-  }, [showCountButtons]);
+    } else {
+      playGame();
+    }
+  }, [showCountButtons, playGame, user]);
 
-  const view = useViewport(true);
   const handleCellClick = useCallback(
     (color: Button) => {
+      increment.current += 1;
+      playGame();
+      playClick();
+
+      if (increment.current % 7 === 0) {
+        showCountButtons.current += 1;
+      }
       setShowButtons(false);
       if (color[0].toLowerCase() === color[1].toLowerCase()) {
-        setScore((prev) => prev + 1);
-        if (score > 1) {
-          setMoney((money) => {
-            storage.set('money', String(money + 1));
-            return money + 1;
-          });
-        }
+        playSuccess();
+        setScore((prev) => {
+          const score = prev + 1;
+          localStorage.setItem(user?.id ? user.id.toString() : 'score', score.toString());
+          return score;
+        });
+      } else {
+        playWrong();
       }
-      setButtons(generateButtons(4));
+      setButtons(generateButtons(showCountButtons.current));
       setTimeout(() => {
         setShowButtons(true);
       }, 500);
@@ -115,31 +131,29 @@ function Game() {
     [showCountButtons, score]
   );
   useEffect(() => {
-    if (money >= 10) {
-      popup
-        .open({
-          title: 'Hello!',
-          message: 'Вы заработали 10 руб. Хотите выводить?',
-          buttons: [
-            { id: 'later', type: 'default', text: 'Позже' },
-            { id: 'later', type: 'default', text: 'Да' },
-          ],
-        })
-        .then(() => {
-          setShowResult(true);
-        });
+    if (score >= 10 && !showResult) {
+      // popup
+      //   .open({
+      //     title: 'Hello!',
+      //     message: 'Вы заработали 10 руб. Хотите выводить?',
+      //     buttons: [
+      //       { id: 'later', type: 'default', text: 'Позже' },
+      //       { id: 'later', type: 'default', text: 'Да' },
+      //     ],
+      //   })
+      //   .then(() => {
+      //     setShowResult(true);
+      //   });
     }
-
-    view?.expand();
-  }, [money, view]);
+  }, [score, showResult]);
   if (showResult) {
-    return <Result balance={money} />;
+    return <Result balance={score} />;
   }
   return (
-    <div className="flex flex-1 items-center relative justify-center">
+    <div className="flex flex-1 items-center relative justify-center w-full">
       <div className="absolute flex flex-col gap-y-2 items-center top-1">
         <p className="text-sm">Кликать на ту ячейку, у которой текст и цвет совпадают.</p>
-        <p className="text-lg">Правилных ответов: {score}</p>
+        <p className="text-xl font-bold mt-4">Правилных ответов: {score}</p>
       </div>
 
       {showButtons && (
@@ -151,13 +165,15 @@ function Game() {
                 style={{ backgroundImage: `url(${img})` }}
                 key={index}
                 onClick={() => {
-                  handleCellClick(button);
-                  setEffect(true);
+                  if (button[0] !== 'grey') {
+                    handleCellClick(button);
+                    setEffect(true);
+                  }
                 }}
                 className={`${effect && 'animate-wiggle'} grid-item`}
                 onAnimationEnd={() => setEffect(false)}
               >
-                {button[1]}
+                {colorNames[button[1] as any]}
               </div>
             );
           })}
