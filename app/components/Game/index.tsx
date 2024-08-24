@@ -5,7 +5,7 @@ import './game.css';
 
 import Result from '../Result';
 import useSound from 'use-sound';
-import { useInitData, usePopup } from '@tma.js/sdk-react';
+import { useCloudStorage, useInitData, usePopup } from '@tma.js/sdk-react';
 
 type Button = [string, string];
 
@@ -76,7 +76,7 @@ function random3(ignore: number): number {
 function Game() {
   const [buttons, setButtons] = useState<Button[]>([]);
 
-  // const storage = useCloudStorage();
+  const storage = useCloudStorage();
   const popup = usePopup();
   const increment = useRef(0);
   const initData = useInitData();
@@ -93,15 +93,15 @@ function Game() {
   const [showResult, setShowResult] = useState(false);
   useEffect(() => {
     setButtons(generateButtons(showCountButtons.current));
-    const score = Number(
-      localStorage.getItem(initData?.user ? initData.user.id.toString() : 'score') || '0'
-    );
-    setScore(score);
-    if (score >= 10) {
-      setShowResult(true);
-    } else {
-      playGame();
-    }
+    // const score = Number(
+    //   localStorage.getItem(initData?.user ? initData.user.id.toString() : 'score') || '0'
+    // );
+    // setScore(score);
+    // if (score >= 10) {
+    //   setShowResult(true);
+    // } else {
+    //   playGame();
+    // }
   }, [showCountButtons, playGame, initData]);
 
   const handleCellClick = useCallback(
@@ -118,10 +118,10 @@ function Game() {
         playSuccess();
         setScore((prev) => {
           const score = prev + 1;
-          localStorage.setItem(
-            initData?.user?.id ? initData.user.id.toString() : 'score',
-            score.toString()
-          );
+          // localStorage.setItem(
+          //   initData?.user?.id ? initData.user.id.toString() : 'score',
+          //   score.toString()
+          // );
           return score;
         });
       } else {
