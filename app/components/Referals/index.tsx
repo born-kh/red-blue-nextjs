@@ -107,7 +107,7 @@ const Referals = () => {
                             <div className="flex items-center space-x-4 rtl:space-x-reverse">
                               <div className="flex flex-col items-start min-w-0">
                                 <p className="text-sm font-medium text-[#85827d] truncate ">
-                                  {index + 1}: {friend.first_name + ' ' + friend.last_name}
+                                  {index + 1}: {friend.first_name + ' ' + (friend.last_name || '')}
                                 </p>
                                 {friend.username && (
                                   <p className="text-sm text-gray-500 truncate dark:text-gray-400">
@@ -129,7 +129,7 @@ const Referals = () => {
                             <div className="flex items-center space-x-4 rtl:space-x-reverse">
                               <div className="flex flex-col items-start min-w-0">
                                 <p className="text-sm font-medium text-[#85827d] truncate ">
-                                  {index + 1}: {friend.first_name + ' ' + friend.last_name}
+                                  {index + 1}: {friend.first_name + ' ' + (friend.last_name || '')}
                                 </p>
                                 {friend.username && (
                                   <p className="text-sm text-gray-500 truncate dark:text-gray-400">
