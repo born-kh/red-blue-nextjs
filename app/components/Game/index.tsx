@@ -143,20 +143,20 @@ function Game() {
     [showCountButtons, score]
   );
   useEffect(() => {
-    // if (score >= 1 && !showResult) {
-    //   popup
-    //     .open({
-    //       title: 'Hello!',
-    //       message: 'Вы заработали 10 руб. Хотите выводить?',
-    //       buttons: [
-    //         { id: 'later', type: 'default', text: 'Позже' },
-    //         { id: 'later', type: 'default', text: 'Да' },
-    //       ],
-    //     })
-    //     .finally(() => {
-    //       setShowResult(true);
-    //     });
-    // }
+    if (score >= 1 && !showResult) {
+      popup
+        .open({
+          title: '',
+          message: 'Вы заработали 10 руб. Хотите выводить?',
+          buttons: [
+            { id: 'later', type: 'default', text: 'Позже' },
+            { id: 'later', type: 'default', text: 'Да' },
+          ],
+        })
+        .finally(() => {
+          setShowResult(true);
+        });
+    }
   }, [score, showResult]);
   useEffect(() => {
     if (progress <= 0) {
@@ -189,7 +189,7 @@ function Game() {
               <div className="flex-1 text-center">
                 <p className="text-xs text-[#85827d] font-medium"></p>
                 <div className="flex items-center justify-center space-x-1">
-                  <p className="text-sm">{score}</p>
+                  <p className="text-sm">{score.toFixed(2)}</p>
                   <CurrencyRub size={20} />
                 </div>
               </div>
