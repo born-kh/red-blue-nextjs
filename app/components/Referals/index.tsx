@@ -1,28 +1,26 @@
-import { useInitData } from '@tma.js/sdk-react';
 import { useEffect, useState } from 'react';
 
 const Referals = () => {
   const [openTab, setOpenTab] = useState(1);
   const [friends, setFriends] = useState<any[]>([]);
-  const initData = useInitData();
+
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch(`/api/referals?id=${initData?.user?.id}`, {
+      const response = await fetch(`/api/referals?id=${1}`, {
         method: 'GET',
       });
       return response.json();
     };
-    if (initData?.user) {
-      getData()
-        .then((data) => {
-          console.log(data);
-          setFriends(data.friends as any);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [initData]);
+
+    getData()
+      .then((data) => {
+        console.log(data);
+        setFriends(data.friends as any);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <>
       <div className="flex flex-wrap w-full">

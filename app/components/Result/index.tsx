@@ -4,14 +4,14 @@ import { useInitData, useUtils } from '@tma.js/sdk-react';
 import Referals from '../Referals';
 
 export default function ({ balance }: { balance: number }) {
-  const initData = useInitData();
+  const userData = useInitData();
   const utils = useUtils();
   return (
     <div className="flex flex-col flex-grow gap-2 items-start">
       <div className="flex flex-row self-end">
         {' '}
         <div className="flex-row flex items-center gap-x-2">
-          <span>Ваш баланс {10} руб</span>
+          <span>Ваш баланс {balance} руб</span>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Выводить
           </button>
@@ -30,7 +30,7 @@ export default function ({ balance }: { balance: number }) {
           className="bg-blue-500 w-fit hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
             utils.openTelegramLink(
-              `https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${initData?.user?.id}`
+              `https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
             );
           }}
         >
