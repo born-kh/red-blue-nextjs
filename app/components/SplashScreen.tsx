@@ -1,7 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import anime from 'animejs';
-import Friends from '../icons/Friends';
+import SplashIcon from '../icons/SplashIcon';
 
 const SplashScreen = ({ finishLoading }: any) => {
   useEffect(() => {
@@ -18,8 +18,8 @@ const SplashScreen = ({ finishLoading }: any) => {
   }, []);
 
   return (
-    <div className="flex h-screen items-center justify-center bg-[#43433b] text-white">
-      <Friends />
+    <div className="flex h-screen items-center justify-center bg-[#1d2025] text-white">
+      <SplashIcon />
     </div>
   );
 };

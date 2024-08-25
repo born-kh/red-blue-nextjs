@@ -259,9 +259,9 @@ function Game() {
                         );
                       })}
                     </div>
-                    <div className="flex flex-col self-end">
-                      <p className="text-sm mt-4">За правильный ответ: +0,1 руб</p>
-                      <p className="text-sm ">За провал: -0,5 руб</p>
+                    <div className="flex flex-col items-center w-full">
+                      <p className="text-sm mt-4 text-center">За правильный ответ: +0,1 руб</p>
+                      <p className="text-sm text-center">За провал: -0,5 руб</p>
                     </div>
                   </>
                 )}
