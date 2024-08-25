@@ -61,7 +61,16 @@ const Referals = () => {
       </div>
 
       {isInfo ? (
-        <div className="flex flex-col items-start  w-[calc(100%-2rem)] max-w-xl">
+        <div
+          className="flex flex-col items-start  w-[calc(100%-2rem)] max-w-xl relative
+        "
+        >
+          <div
+            className="flex absolute right-1 top-1 cursor-pointer items-center w-2/3 border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
+            onClick={() => setIsInfo(false)}
+          >
+            Закрыть
+          </div>
           <p className="text-sm ">
             Приглашайте своих друзей по своей персональной ссылке нажав на кнопку "Пригласить"
           </p>
