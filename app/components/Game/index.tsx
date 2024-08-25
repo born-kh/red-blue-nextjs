@@ -116,15 +116,18 @@ function Game() {
       setShowButtons(false);
       if (color[0].toLowerCase() === color[1].toLowerCase()) {
         setGameStart(true);
-        playSuccess();
-        setScore((prev) => {
-          const score = prev + 0.1;
 
-          showCountButtons.current = 4 + Number(score.toFixed(1));
+        if (gameStart) {
+          playSuccess();
+          setScore((prev) => {
+            const score = prev + 0.1;
 
-          localStorage.setItem('score', score.toString());
-          return score;
-        });
+            showCountButtons.current = 4 + Number(score.toFixed(1));
+
+            localStorage.setItem('score', score.toString());
+            return score;
+          });
+        }
       } else {
         if (gameStart) {
           playWrong();
