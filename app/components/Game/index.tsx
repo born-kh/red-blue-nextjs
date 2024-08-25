@@ -94,8 +94,9 @@ function Game() {
 
   const [progress, setProgress] = useState(100);
   useEffect(() => {
-    setButtons(generateButtons(showCountButtons.current));
     const score = Number(localStorage.getItem('score') || '0');
+    showCountButtons.current = 4 + score;
+    setButtons(generateButtons(showCountButtons.current));
     setScore(score);
     if (score >= 10) {
       setShowResult(true);
@@ -120,9 +121,9 @@ function Game() {
         if (gameStart) {
           playSuccess();
           setScore((prev) => {
-            const score = prev + 0.1;
+            const score = Number((prev + 0.1).toFixed(1));
 
-            showCountButtons.current = 4 + Number(score.toFixed(1));
+            showCountButtons.current = 4 + score;
 
             localStorage.setItem('score', score.toString());
             return score;
@@ -172,6 +173,10 @@ function Game() {
         localStorage.setItem('score', score.toString());
         return score;
       });
+      setButtons(generateButtons(showCountButtons.current));
+      setTimeout(() => {
+        setShowButtons(true);
+      }, 500);
     }
   }, [progress, gameStart, playSuccess]);
 
@@ -184,9 +189,9 @@ function Game() {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              {/* <p className="text-sm">{`${userData?.user?.firstName} ${
+              <p className="text-sm">{`${userData?.user?.firstName} ${
                 userData?.user?.lastName || ''
-              }`}</p> */}
+              }`}</p>
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
