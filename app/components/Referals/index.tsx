@@ -61,7 +61,7 @@ const Referals = () => {
       </div>
 
       {isInfo ? (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col items-start  w-[calc(100%-2rem)] max-w-xl">
           <p className="text-sm ">
             Приглашайте своих друзей по своей персональной ссылке нажав на кнопку "Пригласить"
           </p>
