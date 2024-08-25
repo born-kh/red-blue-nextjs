@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import './game.css';
 
@@ -79,16 +79,16 @@ function Game() {
   const [buttons, setButtons] = useState<Button[]>([]);
   const userData = useInitData();
   const popup = usePopup();
-  const increment = useRef(0);
+
   const showCountButtons = useRef(4);
   const [showButtons, setShowButtons] = useState(true);
   const [effect, setEffect] = useState(false);
   const progressInterval = useRef<any>();
   const [score, setScore] = useState(0);
   const [playClick] = useSound('/click.mp3');
-  const [playGame] = useSound('/game_process.mp3', { volume: 0.25, loop: true });
-  const [playSuccess] = useSound('/success.mp3', { volume: 0.5 });
-  const [playWrong] = useSound('/wrong.mp3', { volume: 0.5 });
+  const [playGame] = useSound('/game_process.mp3', { volume: 0.1, loop: true });
+  const [playSuccess] = useSound('/success.mp3', { volume: 0.2 });
+  const [playWrong] = useSound('/wrong.mp3', { volume: 0.2 });
   const [gameStart, setGameStart] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
@@ -105,7 +105,6 @@ function Game() {
 
   const handleCellClick = useCallback(
     (color: Button) => {
-      increment.current += 1;
       setProgress(100);
       clearInterval(progressInterval.current);
       progressInterval.current = setInterval(() => {
@@ -120,17 +119,21 @@ function Game() {
         playSuccess();
         setScore((prev) => {
           const score = prev + 0.1;
-          showCountButtons.current += Number(score.toFixed(0));
+
+          showCountButtons.current = 4 + Number(score.toFixed(1));
+
           localStorage.setItem('score', score.toString());
           return score;
         });
       } else {
-        playWrong();
-        setScore((prev) => {
-          const score = prev > 0.5 ? prev - 0.5 : 0;
-          localStorage.setItem('score', score.toString());
-          return score;
-        });
+        if (gameStart) {
+          playWrong();
+          setScore((prev) => {
+            const score = prev > 0.5 ? prev - 0.5 : 0;
+            localStorage.setItem('score', score.toString());
+            return score;
+          });
+        }
       }
       setButtons(generateButtons(showCountButtons.current));
       setTimeout(() => {
@@ -160,7 +163,6 @@ function Game() {
   useEffect(() => {
     if (progress <= 0 && gameStart) {
       playWrong();
-      clearInterval(progressInterval.current);
       setProgress(100);
       setScore((prev) => {
         const score = prev > 0.5 ? prev - 0.5 : 0;
@@ -179,9 +181,9 @@ function Game() {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              <p className="text-sm">{`${userData?.user?.firstName} ${
+              {/* <p className="text-sm">{`${userData?.user?.firstName} ${
                 userData?.user?.lastName || ''
-              }`}</p>
+              }`}</p> */}
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
@@ -260,8 +262,8 @@ function Game() {
                       })}
                     </div>
                     <div className="flex flex-col items-center w-full">
-                      <p className="text-sm mt-4 text-center">За правильный ответ: +0,1 руб</p>
-                      <p className="text-sm text-center">За провал: -0,5 руб</p>
+                      <p className="text-sm mt-4 text-center">За правильный ответ: +0.1 руб</p>
+                      <p className="text-sm text-center">За провал: -0.5 руб</p>
                     </div>
                   </>
                 )}
