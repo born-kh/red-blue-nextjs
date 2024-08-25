@@ -44,7 +44,7 @@ const Referals = () => {
           className="text-center text-[#85827d] w-1/3 cursor-pointer"
           onClick={() => {
             utils.openTelegramLink(
-              `https://t.me/share/url?url=http://t.me/red_blue_game_bot?start=fren=${userData?.user?.id}`
+              `https://t.me/share/url?url=https://t.me/red_blue_game_bot/start=fren=${userData?.user?.id}`
             );
           }}
         >
