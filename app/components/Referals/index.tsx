@@ -62,7 +62,7 @@ const Referals = () => {
 
       {isInfo ? (
         <div
-          className="flex flex-col items-start  w-[calc(100%-2rem)] max-w-xl relative
+          className="flex flex-col items-start self-center  w-[calc(100%-2rem)] max-w-xl relative
         "
         >
           <div
@@ -71,17 +71,17 @@ const Referals = () => {
           >
             Закрыть
           </div>
-          <p className="text-sm ">
+          <p className="text-sm text-start mt-2">
             Приглашайте своих друзей по своей персональной ссылке нажав на кнопку "Пригласить"
           </p>
-          <p className="text-sm">
+          <p className="text-sm text-start mt-2">
             Неактивный реферал - это те, которые запустили игру в Telegram, но еще не скачали игру
             из Маркета.
           </p>
-          <p className="text-sm">
+          <p className="text-sm text-start mt-2">
             Активный реферал - это те, которые скачали и запустили игру из Маркета.
           </p>
-          <p className="text-sm ">
+          <p className="text-sm text-start mt-2">
             Различные бонусы из игры получите только от активных рефералов.
           </p>
         </div>
