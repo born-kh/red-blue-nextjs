@@ -19,7 +19,7 @@ const SplashScreen = ({ finishLoading }: any) => {
 
   return (
     <div className="flex h-screen items-center justify-center bg-[#1d2025] text-white">
-      <SplashIcon />
+      <img id="logo" src="/logo.png" alt="Logo" className="w-20 h-20" />
     </div>
   );
 };
