@@ -87,8 +87,8 @@ function Game() {
   const [score, setScore] = useState(0);
   const [playClick] = useSound('/click.mp3');
   const [playGame] = useSound('/game_process.mp3', { volume: 0.25, loop: true });
-  const [playSuccess] = useSound('/success.mp3', { volume: 0.5, loop: true });
-  const [playWrong] = useSound('/wrong.mp3', { volume: 0.5, loop: true });
+  const [playSuccess] = useSound('/success.mp3', { volume: 0.5 });
+  const [playWrong] = useSound('/wrong.mp3', { volume: 0.5 });
   const [gameStart, setGameStart] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
