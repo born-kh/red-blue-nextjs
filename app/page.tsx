@@ -14,10 +14,9 @@ export default function Home() {
   useEffect(() => {
     view?.expand();
   }, [view]);
-  return loading ? (
-    <SplashScreen finishLoading={finishLoading} />
-  ) : (
-    <main className="flex min-h-screen flex-col items-center justify-between ">
+  return (
+    <main className="flex relative min-h-screen flex-col items-center justify-between ">
+      {loading ? <SplashScreen finishLoading={finishLoading} /> : null}
       <Game />
     </main>
   );
