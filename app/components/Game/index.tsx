@@ -9,6 +9,7 @@ import Settings from '@/app/icons/Settings';
 import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
 import CurrencyRub from '@/app/icons/CurrencyRub';
+import SplashScreen from '../SplashScreen';
 
 type Button = [string, string];
 
@@ -93,6 +94,12 @@ function Game() {
   const [showResult, setShowResult] = useState(false);
 
   const [progress, setProgress] = useState(100);
+
+  const [loading, setLoading] = useState(true);
+
+  const finishLoading = () => {
+    setLoading(false);
+  };
   useEffect(() => {
     setButtons(generateButtons(showCountButtons.current));
     const score = Number(localStorage.getItem('score') || '0');
@@ -170,7 +177,9 @@ function Game() {
     }
   }, [progress, gameStart]);
 
-  return (
+  return loading ? (
+    <SplashScreen finishLoading={finishLoading} />
+  ) : (
     <div className="bg-black flex justify-center w-full">
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">
         <div className="px-4 z-10">
