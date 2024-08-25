@@ -144,7 +144,7 @@ function Game() {
       }, 500);
     },
 
-    [showCountButtons, score]
+    [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
   useEffect(() => {
     if (score >= 10 && gameStart) {
@@ -173,7 +173,7 @@ function Game() {
         return score;
       });
     }
-  }, [progress, gameStart]);
+  }, [progress, gameStart, playSuccess]);
 
   return (
     <div className="bg-black flex justify-center w-full">
