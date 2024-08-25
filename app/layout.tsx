@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
+import SplashScreen from './components/SplashScreen';
 
 const TmaSDKProvider = dynamic(() => import('./components/tma').then((mod) => mod.TmaSDKProvider), {
   ssr: false,
@@ -20,9 +22,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [loading, setLoading] = useState(true);
+
+  const finishLoading = () => {
+    setLoading(false);
+  };
   return (
     <html lang="en">
       <body className={inter.className}>
+        {loading ? <SplashScreen finishLoading={finishLoading} /> : null}
         <TmaSDKProvider>{children}</TmaSDKProvider>
       </body>
     </html>

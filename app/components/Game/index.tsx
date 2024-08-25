@@ -87,12 +87,12 @@ function Game() {
   const [score, setScore] = useState(0);
   const [playClick] = useSound('/click.mp3');
   const [playGame] = useSound('/game_process.mp3', { volume: 0.25, loop: true });
-  const [playSuccess] = useSound('/success.mp3');
-  const [playWrong] = useSound('/wrong.mp3');
+  const [playSuccess] = useSound('/success.mp3', { volume: 0.5, loop: true });
+  const [playWrong] = useSound('/wrong.mp3', { volume: 0.5, loop: true });
   const [gameStart, setGameStart] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(100);
   useEffect(() => {
     setButtons(generateButtons(showCountButtons.current));
     const score = Number(localStorage.getItem('score') || '0');
@@ -105,7 +105,6 @@ function Game() {
 
   const handleCellClick = useCallback(
     (color: Button) => {
-      setGameStart(true);
       increment.current += 1;
       setProgress(100);
       clearInterval(progressInterval.current);
@@ -115,14 +114,13 @@ function Game() {
 
       playClick();
 
-      if (increment.current % 7 === 0) {
-        showCountButtons.current += 1;
-      }
       setShowButtons(false);
       if (color[0].toLowerCase() === color[1].toLowerCase()) {
+        setGameStart(true);
         playSuccess();
         setScore((prev) => {
           const score = prev + 0.1;
+          showCountButtons.current += Number(score.toFixed(0));
           localStorage.setItem('score', score.toString());
           return score;
         });
@@ -160,8 +158,9 @@ function Game() {
     }
   }, [score, showResult]);
   useEffect(() => {
-    if (progress <= 0) {
+    if (progress <= 0 && gameStart) {
       setProgress(100);
+      playWrong();
       clearInterval(progressInterval.current);
       setScore((prev) => {
         const score = prev > 0.5 ? prev - 0.5 : 0;
@@ -169,7 +168,7 @@ function Game() {
         return score;
       });
     }
-  }, [progress]);
+  }, [progress, gameStart]);
 
   return (
     <div className="bg-black flex justify-center w-full">
@@ -180,7 +179,9 @@ function Game() {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              <p className="text-sm">{`${userData?.user?.firstName} ${userData?.user?.lastName}`}</p>
+              <p className="text-sm">{`${userData?.user?.firstName} ${
+                userData?.user?.lastName || ''
+              }`}</p>
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
@@ -236,27 +237,33 @@ function Game() {
                 </div>
 
                 {showButtons && (
-                  <div className="game-container animate-fadeIn transition ease-in-out delay-150">
-                    {buttons.map((button, index) => {
-                      let img = `/${button[0]}.png`;
-                      return (
-                        <div
-                          style={{ backgroundImage: `url(${img})` }}
-                          key={index}
-                          onClick={() => {
-                            if (button[0] !== 'grey') {
-                              handleCellClick(button);
-                              setEffect(true);
-                            }
-                          }}
-                          className={`${effect && 'animate-wiggle'} grid-item`}
-                          onAnimationEnd={() => setEffect(false)}
-                        >
-                          {colorNames[button[1] as any]}
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <>
+                    <div className="game-container animate-fadeIn transition ease-in-out delay-150">
+                      {buttons.map((button, index) => {
+                        let img = `/${button[0]}.png`;
+                        return (
+                          <div
+                            style={{ backgroundImage: `url(${img})` }}
+                            key={index}
+                            onClick={() => {
+                              if (button[0] !== 'grey') {
+                                handleCellClick(button);
+                                setEffect(true);
+                              }
+                            }}
+                            className={`${effect && 'animate-wiggle'} grid-item`}
+                            onAnimationEnd={() => setEffect(false)}
+                          >
+                            {colorNames[button[1] as any]}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="flex flex-col self-end">
+                      <p className="text-sm mt-4">За правильный ответ: +0,1 руб</p>
+                      <p className="text-sm ">За провал: -0,5 руб</p>
+                    </div>
+                  </>
                 )}
               </div>
             )}

@@ -11,6 +11,7 @@
   "dependencies": {
     "@tma.js/sdk": "^2.7.0",
     "@tma.js/sdk-react": "^2.2.8",
+    "animejs": "^3.2.2",
     "grammy": "^1.28.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.3",
@@ -20,6 +21,7 @@
     "use-sound": "^4.0.3"
   },
   "devDependencies": {
+    "@types/animejs": "^3.1.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
