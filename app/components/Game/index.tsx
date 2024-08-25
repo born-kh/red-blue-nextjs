@@ -97,7 +97,7 @@ function Game() {
     setButtons(generateButtons(showCountButtons.current));
     const score = Number(localStorage.getItem('score') || '0');
     setScore(score);
-    if (score >= 100) {
+    if (score >= 10) {
       setShowResult(true);
     }
     playGame();
@@ -141,7 +141,7 @@ function Game() {
     [showCountButtons, score]
   );
   useEffect(() => {
-    if (score >= 1 && !showResult) {
+    if (score >= 10 && gameStart) {
       clearInterval(progressInterval.current);
       popup
         .open({
@@ -156,7 +156,7 @@ function Game() {
           setShowResult(true);
         });
     }
-  }, [score, showResult]);
+  }, [score, gameStart]);
   useEffect(() => {
     if (progress <= 0 && gameStart) {
       playWrong();
