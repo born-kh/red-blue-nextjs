@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect } from 'react';
 import anime from 'animejs';
-import SplashIcon from '../icons/SplashIcon';
 
 const SplashScreen = ({ finishLoading }: any) => {
   useEffect(() => {
@@ -18,7 +17,7 @@ const SplashScreen = ({ finishLoading }: any) => {
   }, []);
 
   return (
-    <div className="flex h-screen items-center justify-center bg-[#1d2025] text-white">
+    <div className="flex h-screen items-center justify-center bg-[#1d2025] text-white w-full">
       <img id="logo" src="/logo.png" alt="Logo" className="w-20 h-20" />
     </div>
   );
