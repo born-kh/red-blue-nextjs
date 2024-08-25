@@ -66,7 +66,7 @@ const Referals = () => {
         "
         >
           <div
-            className="flex absolute right-1 top-1 cursor-pointer items-center w-2/3 border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
+            className="flex cursor-pointer self-end items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
             onClick={() => setIsInfo(false)}
           >
             Закрыть
