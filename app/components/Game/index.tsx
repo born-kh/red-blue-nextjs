@@ -75,7 +75,7 @@ function random3(ignore: number): number {
   }
 }
 
-function Game() {
+function Game({ activated }: { activated: boolean }) {
   const [buttons, setButtons] = useState<Button[]>([]);
   const userData = useInitData();
   const popup = usePopup();
@@ -98,11 +98,11 @@ function Game() {
     showCountButtons.current = 4 + score;
     setButtons(generateButtons(showCountButtons.current));
     setScore(score);
-    if (score >= 10) {
+    if (score >= 10 || activated) {
       setShowResult(true);
     }
     playGame();
-  }, [showCountButtons, playGame]);
+  }, [showCountButtons, playGame, activated]);
 
   const handleCellClick = useCallback(
     (color: Button) => {
