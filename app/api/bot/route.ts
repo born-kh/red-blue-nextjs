@@ -17,7 +17,6 @@ bot.command('start', async (ctx) => {
 
   const findUser = await UserModel.findOne({ user_id: ctx.chat.id });
 
-  console.log(findUser);
   if (!findUser) {
     if (message) {
       if (message.text.includes('fren')) {
@@ -38,6 +37,7 @@ bot.command('start', async (ctx) => {
       first_name: ctx.chat.first_name,
       last_name: ctx.chat.last_name,
       user_id: ctx.chat.id,
+      active: !!message?.text?.includes('fromApp'),
     });
     user.save();
   }
