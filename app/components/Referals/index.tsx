@@ -131,48 +131,52 @@ const Referals = () => {
                   <div className="tab-content tab-space">
                     <div className={openTab === 1 ? 'block' : 'hidden'} id="link1">
                       <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-                        {friends.map((friend, index) => {
-                          return (
-                            <li className="pt-3 pb-0 sm:pt-4 w-full" key={'friend' + index}>
-                              <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                                <div className="flex flex-col items-start min-w-0">
-                                  <p className="text-sm font-medium text-[#85827d] truncate ">
-                                    {index + 1}:{' '}
-                                    {friend.first_name + ' ' + (friend.last_name || '')}
-                                  </p>
-                                  {friend.username && (
-                                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                      @{friend.username}
+                        {friends
+                          .filter((friend) => friend.active)
+                          .map((friend, index) => {
+                            return (
+                              <li className="pt-3 pb-0 sm:pt-4 w-full" key={'friend' + index}>
+                                <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                  <div className="flex flex-col items-start min-w-0">
+                                    <p className="text-sm font-medium text-[#85827d] truncate ">
+                                      {index + 1}:{' '}
+                                      {friend.first_name + ' ' + (friend.last_name || '')}
                                     </p>
-                                  )}
+                                    {friend.username && (
+                                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        @{friend.username}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            </li>
-                          );
-                        })}
+                              </li>
+                            );
+                          })}
                       </ul>
                     </div>
                     <div className={openTab === 2 ? 'block' : 'hidden'} id="link2">
                       <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-                        {friends.map((friend, index) => {
-                          return (
-                            <li className="pt-3 pb-0 sm:pt-4 w-full" key={'friend' + index}>
-                              <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                                <div className="flex flex-col items-start min-w-0">
-                                  <p className="text-sm font-medium text-[#85827d] truncate ">
-                                    {index + 1}:{' '}
-                                    {friend.first_name + ' ' + (friend.last_name || '')}
-                                  </p>
-                                  {friend.username && (
-                                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                      @{friend.username}
+                        {friends
+                          .filter((friend) => !friend.active)
+                          .map((friend, index) => {
+                            return (
+                              <li className="pt-3 pb-0 sm:pt-4 w-full" key={'friend' + index}>
+                                <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                  <div className="flex flex-col items-start min-w-0">
+                                    <p className="text-sm font-medium text-[#85827d] truncate ">
+                                      {index + 1}:{' '}
+                                      {friend.first_name + ' ' + (friend.last_name || '')}
                                     </p>
-                                  )}
+                                    {friend.username && (
+                                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        @{friend.username}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            </li>
-                          );
-                        })}
+                              </li>
+                            );
+                          })}
                       </ul>
                     </div>
                   </div>
