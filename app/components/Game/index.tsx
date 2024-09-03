@@ -167,7 +167,7 @@ function Game({ activated }: { activated: boolean }) {
   useEffect(() => {
     if (progress <= 0 && gameStart) {
       playWrong();
-      setProgress(100);
+      clearInterval(progressInterval.current);
       setScore((prev) => {
         const score = prev > 0.5 ? prev - 0.5 : 0;
         localStorage.setItem('score', score.toString());
