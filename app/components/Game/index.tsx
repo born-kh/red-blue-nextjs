@@ -238,9 +238,11 @@ function Game({ activated }: { activated: boolean }) {
 
               {showResult && !activated && (
                 <>
-                  <div className=" flex items-center h-[32px]  w-[2px] bg-[#43433b] mx-2">
+                  <div className="flex items-center ">
                     <p className="text-sm">Вывод</p>
-                    <Settings className="text-white" />
+                    <div className=" h-[32px]  w-[2px] bg-[#43433b] mx-2">
+                      <Settings className="text-white" />
+                    </div>
                   </div>
                 </>
               )}
