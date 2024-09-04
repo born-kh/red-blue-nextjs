@@ -17,7 +17,7 @@ bot.command('start', async (ctx) => {
 
   const findUser = await UserModel.findOne({ user_id: ctx.chat.id });
 
-  console.log('findUser', message);
+  console.log('findUser', message, ctx);
   if (!findUser) {
     console.log('message', message);
     if (message) {
