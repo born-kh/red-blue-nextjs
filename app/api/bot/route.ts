@@ -14,7 +14,7 @@ const bot = new Bot(token);
 bot.command('start', async (ctx) => {
   const message = ctx.message;
   await dbConnect();
-
+  console.log('match', ctx.match);
   const findUser = await UserModel.findOne({ user_id: ctx.chat.id });
 
   console.log('findUser', message, ctx);
