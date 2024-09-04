@@ -10,7 +10,7 @@ export async function GET(request: any) {
 
   return NextResponse.json(
     {
-      link: `https://t.me/share/url?url=https://t.me/red_blue_game_bot/start=friend=${app_user_id}=fromApp`,
+      link: `https://t.me/red_blue_game_bot/start=friend=${app_user_id}=fromApp`,
     },
     { status: 200 }
   );
@@ -22,7 +22,7 @@ export async function POST(request: any) {
 
   return NextResponse.json(
     {
-      link: `https://t.me/share/url?url=https://t.me/red_blue_game_bot/start=friend=${app_user_id}=fromApp`,
+      link: `https://t.me/red_blue_game_bot/start=friend=${app_user_id}=fromApp`,
     },
     { status: 200 }
   );
