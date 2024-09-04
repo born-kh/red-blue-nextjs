@@ -24,12 +24,11 @@ export async function GET(request: any) {
 
 export async function POST(request: NextRequest) {
   console.log(request.body);
-  const data1 = await request.formData();
-  console.log(data1);
-  const data = await request.json();
-  console.log(data);
+  const data = await request.formData();
 
-  const { code, app_user_id } = data;
+  const code = data.get('code');
+  const app_user_id = data.get('app_user_id');
+
   await dbConnect();
   const findUser = await UserModel.findOne({ user_id: code });
   if (!findUser) return NextResponse.json({ message: 'Not found' }, { status: 404 });
