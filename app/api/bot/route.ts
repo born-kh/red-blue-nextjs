@@ -22,28 +22,17 @@ bot.command('start', async (ctx) => {
       if (message.text.includes('friend')) {
         const id = message.text.split('=')[1];
 
-        const data: any = {
+        const user = await UserModel.create({
+          parent_id: id,
           username: ctx.chat.username,
           first_name: ctx.chat.first_name,
           last_name: ctx.chat.last_name,
           user_id: ctx.chat.id,
           active: false,
-        };
-
-        if (message?.text?.includes('fromApp')) {
-          data.app_parent_id = id;
-        } else {
-          data.parent_id = id;
-        }
-        const user = await UserModel.create(data);
+        });
         user.save();
       } else if (message.text.includes('app_user_id')) {
         const id = message.text.split('=')[1];
-        const users = await UserModel.find({ app_parent_id: id });
-        for (let user of users) {
-          await UserModel.findByIdAndUpdate(user._id.toString(), { parent_id: ctx.chat.id });
-        }
-
         const user = await UserModel.create({
           app_user_id: id,
           username: ctx.chat.username,
