@@ -33,5 +33,5 @@ export async function POST(request: any) {
   findUser.save();
   const parentUser = await UserModel.findOne({ user_id: findUser?.parent_id });
 
-  return NextResponse.json({ parentId: parentUser?.app_user_id }, { status: 200 });
+  return NextResponse.json({ app_parent_id: parentUser?.app_user_id }, { status: 200 });
 }
