@@ -95,6 +95,7 @@ function Game({ activated }: { activated: boolean }) {
   const [showResult, setShowResult] = useState(false);
   const storage = useCloudStorage();
   const [progress, setProgress] = useState(100);
+  const [isWithdraw, setIsWithdraw] = useState(false);
   useEffect(() => {
     async function checkScore() {
       storage.get('score').then((value) => {
@@ -238,8 +239,13 @@ function Game({ activated }: { activated: boolean }) {
 
               {showResult && !activated && (
                 <>
-                  <div className="flex items-center cursor-pointer">
-                    <p className="text-sm">Вывод</p>
+                  <div
+                    className="flex items-center cursor-pointer"
+                    onClick={() => {
+                      setIsWithdraw(true);
+                    }}
+                  >
+                    <p className="text-sm">Выводить</p>
                     <div className=" h-[32px]  w-[2px] bg-[#43433b] mx-2">
                       <Settings className="text-white" />
                     </div>
@@ -253,7 +259,29 @@ function Game({ activated }: { activated: boolean }) {
         <div className="flex-grow mt-4 bg-[#f3ba2f] rounded-t-[48px] relative top-glow z-0">
           <div className="absolute top-[2px] left-0 right-0 bottom-0 bg-[#1d2025] rounded-t-[46px]">
             <div className="px-4 mt-6 flex justify-between gap-2"></div>
-            {showResult ? (
+            {isWithdraw ? (
+              <div
+                className="flex flex-col items-start self-center  w-[calc(100%-2rem)] max-w-xl relative
+            "
+              >
+                <div
+                  className="flex cursor-pointer self-end items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
+                  onClick={() => setIsWithdraw(false)}
+                >
+                  Закрыть
+                </div>
+                <p className="text-sm text-start mt-2">
+                  Введите свой код {userData?.user?.id} в течении 72 часов в игре в меню "Рефералы"
+                  чтобы получить свои деньги.
+                </p>
+                <div
+                  className="flex cursor-pointer mt-2 items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
+                  onClick={() => setIsWithdraw(false)}
+                >
+                  Ок
+                </div>
+              </div>
+            ) : showResult ? (
               <Referals />
             ) : (
               <div className="flex flex-1 flex-col items-center relative justify-center w-full">
