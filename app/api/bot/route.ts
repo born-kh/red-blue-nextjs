@@ -57,6 +57,12 @@ bot.command('start', async (ctx) => {
 
   ctx.reply(JSON.stringify(ctx.message?.text));
 });
+
+bot.command('add', async (ctx) => {
+  // `item` will be "apple pie" if a user sends "/add apple pie".
+  const item = ctx.match;
+  console.log('addd', ctx);
+});
 bot.on('message:text', async (ctx) => {
   await ctx.reply(ctx.message.text);
 });
