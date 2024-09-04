@@ -102,7 +102,7 @@ function Game({ activated }: { activated: boolean }) {
         showCountButtons.current = 4 + score;
         setButtons(generateButtons(showCountButtons.current));
         setScore(score);
-        if (score >= 2) {
+        if (score >= 1) {
           setShowResult(true);
         }
       });
@@ -159,7 +159,7 @@ function Game({ activated }: { activated: boolean }) {
     [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
   useEffect(() => {
-    if (score >= 10 && gameStart) {
+    if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
       popup
         .open({
