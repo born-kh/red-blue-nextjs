@@ -99,7 +99,7 @@ function Game({ activated }: { activated: boolean }) {
     showCountButtons.current = 4 + score;
     setButtons(generateButtons(showCountButtons.current));
     setScore(score);
-    if (score >= 10 || activated) {
+    if (score >= 2 || activated) {
       setShowResult(true);
     }
     playGame();
