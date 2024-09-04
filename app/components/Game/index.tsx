@@ -260,10 +260,7 @@ function Game({ activated }: { activated: boolean }) {
           <div className="absolute top-[2px] left-0 right-0 bottom-0 bg-[#1d2025] rounded-t-[46px]">
             <div className="px-4 mt-6 flex justify-between gap-2"></div>
             {isWithdraw ? (
-              <div
-                className="flex flex-col items-start self-center  w-[calc(100%-2rem)] max-w-xl relative
-            "
-              >
+              <div className="flex flex-col items-start self-center   relative">
                 <div
                   className="flex cursor-pointer self-end items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
                   onClick={() => setIsWithdraw(false)}
