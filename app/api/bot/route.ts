@@ -19,27 +19,36 @@ bot.command('start', async (ctx) => {
 
   if (!findUser) {
     if (message) {
-      if (message.text.includes('fren')) {
-        const parent_id = message.text.split('=')[1];
-        const user = await UserModel.create({
-          parent_id,
+      if (message.text.includes('friend')) {
+        const id = message.text.split('=')[1];
+        const data: any = {
           username: ctx.chat.username,
           first_name: ctx.chat.first_name,
           last_name: ctx.chat.last_name,
           user_id: ctx.chat.id,
           active: false,
+        };
+
+        if (message?.text?.includes('fromApp')) {
+          data.parent_id = id;
+        } else {
+          data.app_parent_id = id;
+        }
+        const user = await UserModel.create(data);
+        user.save();
+      } else if (message.text.includes('app_user_id')) {
+        const id = message.text.split('=')[1];
+        const user = await UserModel.create({
+          app_user_id: id,
+          username: ctx.chat.username,
+          first_name: ctx.chat.first_name,
+          last_name: ctx.chat.last_name,
+          user_id: ctx.chat.id,
+          active: true,
         });
         user.save();
       }
     }
-    const user = await UserModel.create({
-      username: ctx.chat.username,
-      first_name: ctx.chat.first_name,
-      last_name: ctx.chat.last_name,
-      user_id: ctx.chat.id,
-      active: !!message?.text?.includes('fromApp'),
-    });
-    user.save();
   }
 
   ctx.reply(JSON.stringify(ctx.message?.text));
