@@ -41,8 +41,7 @@ bot.command('start', async (ctx) => {
         const id = message.text.split('=')[1];
         const users = await UserModel.find({ app_parent_id: id });
         for (let user of users) {
-          console.log(user, user._id);
-          await UserModel.findByIdAndUpdate(user._id, { parent_id: ctx.chat.id });
+          await UserModel.findByIdAndUpdate(user._id.toString(), { parent_id: ctx.chat.id });
         }
 
         const user = await UserModel.create({
