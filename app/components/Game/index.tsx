@@ -9,6 +9,7 @@ import Settings from '@/app/icons/Settings';
 import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
 import CurrencyRub from '@/app/icons/CurrencyRub';
+import CopyIcon from '@/app/icons/CopyIcon';
 
 type Button = [string, string];
 
@@ -201,8 +202,23 @@ function Game({ activated }: { activated: boolean }) {
               <div className="flex-1 text-center">
                 <p className="text-xs text-[#85827d] font-medium"></p>
                 <div className="flex items-center justify-center space-x-1">
-                  <p className="text-sm">{score.toFixed(1)}</p>
-                  <CurrencyRub size={20} />
+                  {showResult ? (
+                    <>
+                      <p className="text-sm">Ваш код: {userData?.user?.id}</p>
+                      <div
+                        onClick={() => {
+                          navigator.clipboard.writeText(userData?.user?.id?.toString() || '');
+                        }}
+                      >
+                        <CopyIcon size={20} className="cursor-pointer" />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm">{score.toFixed(1)}</p>
+                      <CurrencyRub size={20} />
+                    </>
+                  )}
                 </div>
               </div>
 
