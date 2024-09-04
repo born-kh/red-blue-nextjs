@@ -184,15 +184,31 @@ function Game({ activated }: { activated: boolean }) {
   return (
     <div className="bg-black flex justify-center w-full">
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">
-        <div className="px-4 z-10">
-          <div className="flex items-center space-x-2 pt-4">
-            <div className="p-1 rounded-lg bg-[#1d2025]">
-              <Hamster size={24} className="text-[#d4d4d4]" />
+        <div className="px-4 z-10 justify">
+          <div className="flex items-center pt-4 justify-between">
+            <div className="flex items-center space-x-2 ">
+              <div className="p-1 rounded-lg bg-[#1d2025]">
+                <Hamster size={24} className="text-[#d4d4d4]" />
+              </div>
+              <div>
+                <p className="text-sm">{`${userData?.user?.firstName} ${
+                  userData?.user?.lastName || ''
+                }`}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm">{`${userData?.user?.firstName} ${
-                userData?.user?.lastName || ''
-              }`}</p>
+            <div className="flex items-center gap-1">
+              {showResult && (
+                <>
+                  <p className="text-sm">Ваш код: {userData?.user?.id}</p>
+                  <div
+                    onClick={() => {
+                      navigator.clipboard.writeText(userData?.user?.id?.toString() || '');
+                    }}
+                  >
+                    <CopyIcon size={20} className="cursor-pointer" />
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
@@ -202,18 +218,7 @@ function Game({ activated }: { activated: boolean }) {
               <div className="flex-1 text-center">
                 <p className="text-xs text-[#85827d] font-medium"></p>
                 <div className="flex items-center justify-center space-x-1">
-                  {showResult ? (
-                    <>
-                      <p className="text-sm">Ваш код: {userData?.user?.id}</p>
-                      <div
-                        onClick={() => {
-                          navigator.clipboard.writeText(userData?.user?.id?.toString() || '');
-                        }}
-                      >
-                        <CopyIcon size={20} className="cursor-pointer" />
-                      </div>
-                    </>
-                  ) : (
+                  {!activated && (
                     <>
                       <p className="text-sm">{score.toFixed(1)}</p>
                       <CurrencyRub size={20} />
@@ -222,9 +227,8 @@ function Game({ activated }: { activated: boolean }) {
                 </div>
               </div>
 
-              {showResult && (
+              {showResult && !activated && (
                 <>
-                  {' '}
                   <div className="h-[32px] w-[2px] bg-[#43433b] mx-2">
                     <Settings className="text-white" />
                   </div>
