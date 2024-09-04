@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import './game.css';
 
 import useSound from 'use-sound';
-import { useInitData, usePopup } from '@tma.js/sdk-react';
+import { useCloudStorage, useInitData, usePopup } from '@tma.js/sdk-react';
 import Settings from '@/app/icons/Settings';
 import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
@@ -93,14 +93,23 @@ function Game({ activated }: { activated: boolean }) {
   const [playWrong] = useSound('/wrong.mp3', { volume: 0.2 });
   const [gameStart, setGameStart] = useState(false);
   const [showResult, setShowResult] = useState(false);
-
+  const storage = useCloudStorage();
   const [progress, setProgress] = useState(100);
   useEffect(() => {
-    const score = Number(localStorage.getItem('score') || '0');
-    showCountButtons.current = 4 + score;
-    setButtons(generateButtons(showCountButtons.current));
-    setScore(score);
-    if (score >= 2 || activated) {
+    async function checkScore() {
+      storage.get('score').then((value) => {
+        const score = Number(value || '0');
+        showCountButtons.current = 4 + score;
+        setButtons(generateButtons(showCountButtons.current));
+        setScore(score);
+        if (score >= 2) {
+          setShowResult(true);
+        }
+      });
+    }
+    if (!activated) {
+      checkScore();
+    } else {
       setShowResult(true);
     }
     playGame();
@@ -127,7 +136,7 @@ function Game({ activated }: { activated: boolean }) {
 
             showCountButtons.current = 4 + score;
 
-            localStorage.setItem('score', score.toString());
+            storage.set('score', score.toString());
             return score;
           });
         }
@@ -136,7 +145,7 @@ function Game({ activated }: { activated: boolean }) {
           playWrong();
           setScore((prev) => {
             const score = prev > 0.5 ? prev - 0.5 : 0;
-            localStorage.setItem('score', score.toString());
+            storage.set('score', score.toString());
             return score;
           });
         }
@@ -172,7 +181,7 @@ function Game({ activated }: { activated: boolean }) {
       clearInterval(progressInterval.current);
       setScore((prev) => {
         const score = prev > 0.5 ? prev - 0.5 : 0;
-        localStorage.setItem('score', score.toString());
+        storage.set('score', score.toString());
         return score;
       });
       setButtons(generateButtons(showCountButtons.current));
