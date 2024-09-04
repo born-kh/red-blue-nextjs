@@ -17,10 +17,13 @@ bot.command('start', async (ctx) => {
 
   const findUser = await UserModel.findOne({ user_id: ctx.chat.id });
 
+  console.log('findUser', message);
   if (!findUser) {
+    console.log('message', message);
     if (message) {
       if (message.text.includes('friend')) {
         const id = message.text.split('=')[1];
+        console.log('friend', id);
         const data: any = {
           username: ctx.chat.username,
           first_name: ctx.chat.first_name,
@@ -38,6 +41,7 @@ bot.command('start', async (ctx) => {
         user.save();
       } else if (message.text.includes('app_user_id')) {
         const id = message.text.split('=')[1];
+        console.log('app_user_id', id);
         const user = await UserModel.create({
           app_user_id: id,
           username: ctx.chat.username,
