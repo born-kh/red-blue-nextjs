@@ -13,6 +13,7 @@ if (!token) throw new Error('TELEGRAM_BOT_TOKEN environment variable not found.'
 const bot = new Bot(token);
 bot.command('start', async (ctx) => {
   const message = ctx.message;
+  console.log(ctx);
   await dbConnect();
 
   const findUser = await UserModel.findOne({ user_id: ctx.chat.id });
