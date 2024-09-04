@@ -231,7 +231,6 @@ function Game({ activated }: { activated: boolean }) {
                   {!activated && (
                     <>
                       <p className="text-sm">{score.toFixed(1)}</p>
-                      <CurrencyRub size={20} />
                     </>
                   )}
                 </div>
@@ -239,7 +238,8 @@ function Game({ activated }: { activated: boolean }) {
 
               {showResult && !activated && (
                 <>
-                  <div className="h-[32px] w-[2px] bg-[#43433b] mx-2">
+                  <div className=" flex items-center h-[32px] w-fit bg-[#43433b] mx-2">
+                    <p className="text-sm">Вывод</p>
                     <Settings className="text-white" />
                   </div>
                 </>

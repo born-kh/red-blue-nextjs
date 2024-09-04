@@ -105,7 +105,7 @@ const Referals = () => {
                     href="#link1"
                     role="tablist"
                   >
-                    Активные:
+                    Не активные
                   </a>
                 </li>
                 <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -122,7 +122,7 @@ const Referals = () => {
                     href="#link2"
                     role="tablist"
                   >
-                    Не активные
+                    Активные:
                   </a>
                 </li>
               </ul>
@@ -132,7 +132,7 @@ const Referals = () => {
                     <div className={openTab === 1 ? 'block' : 'hidden'} id="link1">
                       <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                         {friends
-                          .filter((friend) => friend.active)
+                          .filter((friend) => !friend.active)
                           .map((friend, index) => {
                             return (
                               <li className="pt-3 pb-0 sm:pt-4 w-full" key={'friend' + index}>
@@ -157,7 +157,7 @@ const Referals = () => {
                     <div className={openTab === 2 ? 'block' : 'hidden'} id="link2">
                       <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                         {friends
-                          .filter((friend) => !friend.active)
+                          .filter((friend) => friend.active)
                           .map((friend, index) => {
                             return (
                               <li className="pt-3 pb-0 sm:pt-4 w-full" key={'friend' + index}>
