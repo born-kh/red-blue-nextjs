@@ -56,7 +56,7 @@ bot.command('start', async (ctx) => {
     }
   }
 
-  ctx.reply(JSON.stringify(ctx.message?.text));
+  ctx.reply('Welcome!');
 });
 
 bot.on('message:text', async (ctx) => {
