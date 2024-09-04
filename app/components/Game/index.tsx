@@ -10,6 +10,7 @@ import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
 import CurrencyRub from '@/app/icons/CurrencyRub';
 import CopyIcon from '@/app/icons/CopyIcon';
+import { isAndroid } from 'react-device-detect';
 
 type Button = [string, string];
 
