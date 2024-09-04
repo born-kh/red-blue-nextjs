@@ -2,7 +2,7 @@
 
 import dbConnect from '@/app/lib/db';
 import UserModel from '@/app/model/userModel';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: any) {
   const url = new URL(request.url);
@@ -22,8 +22,11 @@ export async function GET(request: any) {
   return NextResponse.json({ user }, { status: 200 });
 }
 
-export async function POST(request: any) {
+export async function POST(request: NextRequest) {
+  console.log(request);
   const data = await request.json();
+  console.log(data);
+
   const { code, app_user_id } = data;
   await dbConnect();
   const findUser = await UserModel.findOne({ user_id: code });
