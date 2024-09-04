@@ -23,7 +23,9 @@ export async function GET(request: any) {
 }
 
 export async function POST(request: NextRequest) {
-  console.log(request);
+  console.log(request.body);
+  const data = await request.formData();
+  console.log(data);
   const data = await request.json();
   console.log(data);
 
