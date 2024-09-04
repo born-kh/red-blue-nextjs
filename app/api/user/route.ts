@@ -32,6 +32,6 @@ export async function POST(request: any) {
   findUser.app_user_id = app_user_id;
   findUser.save();
   const parentUser = await UserModel.findOne({ user_id: findUser?.parent_id });
-  if (!parentUser) return NextResponse.json({ message: 'Not found' }, { status: 404 });
-  return NextResponse.json({ user: parentUser }, { status: 200 });
+
+  return NextResponse.json({ parentId: parentUser?.app_user_id }, { status: 200 });
 }
