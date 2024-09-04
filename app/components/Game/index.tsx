@@ -238,7 +238,7 @@ function Game({ activated }: { activated: boolean }) {
 
               {showResult && !activated && (
                 <>
-                  <div className="flex items-center ">
+                  <div className="flex items-center cursor-pointer">
                     <p className="text-sm">Вывод</p>
                     <div className=" h-[32px]  w-[2px] bg-[#43433b] mx-2">
                       <Settings className="text-white" />
