@@ -213,8 +213,8 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
         title: '',
         message: `
         Необходимо заработать 10 рублей.
-        За правильный ответ: +0.1 руб
-        За провал: -0.5 руб`,
+    За правильный ответ: +0.1 руб
+    За провал: -0.5 руб`,
         buttons: [{ id: 'yes', type: 'default', text: 'Да' }],
       });
     }
