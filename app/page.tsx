@@ -24,7 +24,6 @@ export default function Home() {
         setScore(data?.user?.score || 0);
       })
       .catch(() => {
-        console.log('error');
         setActivated(false);
       })
       .finally(() => {
