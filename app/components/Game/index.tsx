@@ -107,10 +107,10 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
   const [isWithdraw, setIsWithdraw] = useState(false);
   useEffect(() => {
     function checkScore() {
-      showCountButtons.current = 4 + score;
+      showCountButtons.current = 4 + userScore;
       setButtons(generateButtons(showCountButtons.current));
-      setScore(score);
-      if (score >= 1) {
+      setScore(userScore);
+      if (userScore >= 1) {
         setShowResult(true);
       }
     }
@@ -120,7 +120,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
       setShowResult(true);
     }
     playGame();
-  }, [showCountButtons, playGame, activated, score]);
+  }, [showCountButtons, playGame, activated, userScore]);
 
   const handleCellClick = useCallback(
     (color: Button) => {
