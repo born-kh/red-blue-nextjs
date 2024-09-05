@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   const app_user_id = data.get('app_user_id');
 
   await dbConnect();
-  const findUser = await UserModel.findOne({ user_id: code });
+  const findUser = await UserModel.findOne({ user_id: Number(code) });
   if (!findUser) return NextResponse.json({ message: 'Not found' }, { status: 404 });
   findUser.active = true;
   findUser.app_user_id = app_user_id;
