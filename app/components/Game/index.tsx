@@ -176,7 +176,9 @@ function Game({ activated }: { activated: boolean }) {
       }
     };
     view?.on('change:isExpanded', listener);
-    view?.off('change:isExpanded', listener);
+    return () => {
+      view?.off('change:isExpanded', listener);
+    };
   }, []);
   useEffect(() => {
     if (score >= 1 && gameStart) {
