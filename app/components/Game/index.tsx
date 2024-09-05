@@ -277,13 +277,13 @@ function Game({ activated }: { activated: boolean }) {
                 >
                   Ок
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center self-center gap-1">
                   {showResult && !activated && (
                     <>
                       <p className="text-sm"> {userData?.user?.id}</p>
 
                       <div
-                        className="flex  self-center cursor-pointer mt-2 items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
+                        className="flex   cursor-pointer  items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
                         onClick={() =>
                           navigator.clipboard.writeText(userData?.user?.id?.toString() || '')
                         }
