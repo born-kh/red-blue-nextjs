@@ -46,16 +46,26 @@ bot.command('start', async (ctx) => {
           active: true,
         });
         user.save();
+      } else {
+        const user = await UserModel.create({
+          username: ctx.chat.username,
+          first_name: ctx.chat.first_name,
+          last_name: ctx.chat.last_name,
+          user_id: ctx.chat.id,
+          active: false,
+        });
+        user.save();
       }
+    } else {
+      const user = await UserModel.create({
+        username: ctx.chat.username,
+        first_name: ctx.chat.first_name,
+        last_name: ctx.chat.last_name,
+        user_id: ctx.chat.id,
+        active: false,
+      });
+      user.save();
     }
-    const user = await UserModel.create({
-      username: ctx.chat.username,
-      first_name: ctx.chat.first_name,
-      last_name: ctx.chat.last_name,
-      user_id: ctx.chat.id,
-      active: false,
-    });
-    user.save();
   }
 
   ctx.reply('Welcome!');
