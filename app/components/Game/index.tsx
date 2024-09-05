@@ -277,7 +277,7 @@ function Game({ activated }: { activated: boolean }) {
                 >
                   Ок
                 </div>
-                <div className="flex items-center self-center gap-1">
+                <div className="flex items-center self-center gap-1 mt-4">
                   {showResult && !activated && (
                     <>
                       <p className="text-sm"> {userData?.user?.id}</p>
