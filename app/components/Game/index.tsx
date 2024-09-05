@@ -160,6 +160,14 @@ function Game({ activated }: { activated: boolean }) {
 
   useEffect(() => {
     const listener = (isExpanded: boolean) => {
+      popup.open({
+        title: '',
+        message: String(isExpanded),
+        buttons: [
+          { id: 'later', type: 'default', text: 'Позже' },
+          { id: 'later', type: 'default', text: 'Да' },
+        ],
+      });
       if (isExpanded) {
         clearInterval(progressInterval.current);
         stop();
