@@ -168,14 +168,6 @@ function Game({ activated }: { activated: boolean }) {
 
   useEffect(() => {
     const listener = (state: ViewportState) => {
-      popup.open({
-        title: '',
-        message: JSON.stringify(state),
-        buttons: [
-          { id: 'later', type: 'default', text: 'Позже' },
-          { id: 'later', type: 'default', text: 'Да' },
-        ],
-      });
       if (state.isExpanded) {
         stop();
       } else {
