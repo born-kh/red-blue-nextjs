@@ -167,6 +167,7 @@ function Game({ activated }: { activated: boolean }) {
   );
 
   useEffect(() => {
+    closingBehavior.enableConfirmation();
     const listener = (state: ViewportState) => {
       if (state.isExpanded) {
         stop();
@@ -174,12 +175,21 @@ function Game({ activated }: { activated: boolean }) {
         playGame();
       }
     };
-
+    closingBehavior.on('change', (event) => {
+      popup.open({
+        title: '',
+        message: JSON.stringify(event),
+        buttons: [
+          { id: 'later', type: 'default', text: 'Позже' },
+          { id: 'later', type: 'default', text: 'Да' },
+        ],
+      });
+    });
     view?.on('change', listener);
     return () => {
       view?.off('change', listener);
     };
-  }, [playGame, stop, view]);
+  }, [playGame, stop, view, closingBehavior]);
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
