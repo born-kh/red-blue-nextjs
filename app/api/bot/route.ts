@@ -68,7 +68,7 @@ bot.command('start', async (ctx) => {
     }
   }
 
-  ctx.reply('Welcome!');
+  ctx.reply('Нажмите "Play", чтобы начать заработать деньги в рублях.');
 });
 
 bot.on('message:text', async (ctx) => {
