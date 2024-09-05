@@ -204,18 +204,19 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
       saveScore();
-      popup
-        .open({
-          title: '',
-          message: 'Вы заработали 10 руб. Хотите выводить?',
-          buttons: [
-            { id: 'later', type: 'default', text: 'Позже' },
-            { id: 'later', type: 'default', text: 'Да' },
-          ],
-        })
-        .finally(() => {
-          setShowResult(true);
-        });
+      setShowResult(true);
+      // popup
+      //   .open({
+      //     title: '',
+      //     message: 'Вы заработали 10 руб. Хотите выводить?',
+      //     buttons: [
+      //       { id: 'later', type: 'default', text: 'Позже' },
+      //       { id: 'later', type: 'default', text: 'Да' },
+      //     ],
+      //   })
+      //   .finally(() => {
+
+      //   });
     }
   }, [score, gameStart]);
   useEffect(() => {
