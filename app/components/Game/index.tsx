@@ -207,7 +207,7 @@ function Game({ activated }: { activated: boolean }) {
                 }`}</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
               {showResult && !activated && (
                 <>
                   <p className="text-sm">Ваш код: {userData?.user?.id}</p>
@@ -220,7 +220,7 @@ function Game({ activated }: { activated: boolean }) {
                   </div>
                 </>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
             <div className="flex items-center w-1/3"></div>
@@ -276,6 +276,22 @@ function Game({ activated }: { activated: boolean }) {
                   onClick={() => setIsWithdraw(false)}
                 >
                   Ок
+                </div>
+                <div className="flex items-center gap-1">
+                  {showResult && !activated && (
+                    <>
+                      <p className="text-sm"> {userData?.user?.id}</p>
+
+                      <div
+                        className="flex  self-center cursor-pointer mt-2 items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
+                        onClick={() =>
+                          navigator.clipboard.writeText(userData?.user?.id?.toString() || '')
+                        }
+                      >
+                        Копировать
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             ) : showResult ? (
