@@ -164,14 +164,18 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
     [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
 
+  const saveScore = useCallback(() => {
+    fetch(`/api/score`, {
+      method: 'POST',
+      body: JSON.stringify({ score: score, user_id: userData?.user?.id }),
+    });
+  }, [score]);
+
   useEffect(() => {
     return () => {
-      fetch(`/api/score`, {
-        method: 'POST',
-        body: JSON.stringify({ score: score, user_id: userData?.user?.id }),
-      });
+      saveScore();
     };
-  }, [score]);
+  }, [saveScore, score]);
 
   useEffect(() => {
     const listener = (state: ViewportState) => {
@@ -199,6 +203,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
+      saveScore();
       popup
         .open({
           title: '',
@@ -226,7 +231,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
         setShowButtons(true);
       }, 500);
     }
-  }, [progress, gameStart, playSuccess]);
+  }, [progress, gameStart, playSuccess, saveScore]);
 
   return (
     <div className="bg-black flex justify-center w-full">
