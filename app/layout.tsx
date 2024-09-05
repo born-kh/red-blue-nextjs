@@ -4,7 +4,7 @@ import './globals.css';
 import dynamic from 'next/dynamic';
 
 const TmaSDKProvider = dynamic(() => import('./components/tma').then((mod) => mod.TmaSDKProvider), {
-  ssr: false,
+  ssr: true,
 });
 
 const inter = Inter({ subsets: ['latin'] });
