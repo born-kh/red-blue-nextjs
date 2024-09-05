@@ -23,7 +23,6 @@ export async function GET(request: any) {
 }
 
 export async function POST(request: NextRequest) {
-  console.log(request.body);
   const data = await request.formData();
 
   const code = data.get('code');
@@ -31,7 +30,10 @@ export async function POST(request: NextRequest) {
 
   await dbConnect();
   const findUser = await UserModel.findOne({ user_id: Number(code) });
-  if (!findUser) return NextResponse.json({ message: 'Not found' }, { status: 404 });
+  if (!findUser || (findUser && findUser.active)) {
+    return NextResponse.json({ message: 'Not found' }, { status: 404 });
+  }
+
   findUser.active = true;
   findUser.app_user_id = app_user_id;
   findUser.save();
