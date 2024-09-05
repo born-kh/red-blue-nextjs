@@ -78,7 +78,7 @@ function Game({ activated }: { activated: boolean }) {
   const [buttons, setButtons] = useState<Button[]>([]);
   const userData = useInitData();
   const popup = usePopup();
-
+  const view = useViewport();
   const showCountButtons = useRef(4);
   const [showButtons, setShowButtons] = useState(true);
   const [effect, setEffect] = useState(false);
@@ -156,7 +156,6 @@ function Game({ activated }: { activated: boolean }) {
 
     [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
-  const view = useViewport();
 
   useEffect(() => {
     const listener = (isExpanded: boolean) => {
@@ -170,7 +169,7 @@ function Game({ activated }: { activated: boolean }) {
     return () => {
       view?.off('change:isExpanded', listener);
     };
-  }, [playGame, stop]);
+  }, [playGame, stop, view]);
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
