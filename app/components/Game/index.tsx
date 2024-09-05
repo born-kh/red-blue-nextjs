@@ -85,7 +85,7 @@ function random3(ignore: number): number {
   }
 }
 
-function Game({ activated }: { activated: boolean }) {
+function Game({ activated, score: userScore }: { activated: boolean; score: number }) {
   const [buttons, setButtons] = useState<Button[]>([]);
   const userData = useInitData();
   const popup = usePopup();
@@ -95,27 +95,24 @@ function Game({ activated }: { activated: boolean }) {
   const [showButtons, setShowButtons] = useState(true);
   const [effect, setEffect] = useState(false);
   const progressInterval = useRef<any>();
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(userScore);
   const [playClick] = useSound('/click.mp3');
   const [playGame, { stop }] = useSound('/game_process.mp3', { volume: 0.1, loop: true });
   const [playSuccess] = useSound('/success.mp3', { volume: 0.2 });
   const [playWrong] = useSound('/wrong.mp3', { volume: 0.2 });
   const [gameStart, setGameStart] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const storage = useCloudStorage();
+
   const [progress, setProgress] = useState(100);
   const [isWithdraw, setIsWithdraw] = useState(false);
   useEffect(() => {
-    async function checkScore() {
-      storage.get('score').then((value) => {
-        const score = Number(value || '0');
-        showCountButtons.current = 4 + score;
-        setButtons(generateButtons(showCountButtons.current));
-        setScore(score);
-        if (score >= 1) {
-          setShowResult(true);
-        }
-      });
+    function checkScore() {
+      showCountButtons.current = 4 + score;
+      setButtons(generateButtons(showCountButtons.current));
+      setScore(score);
+      if (score >= 1) {
+        setShowResult(true);
+      }
     }
     if (!activated) {
       checkScore();
@@ -123,7 +120,7 @@ function Game({ activated }: { activated: boolean }) {
       setShowResult(true);
     }
     playGame();
-  }, [showCountButtons, playGame, activated]);
+  }, [showCountButtons, playGame, activated, score]);
 
   const handleCellClick = useCallback(
     (color: Button) => {
@@ -146,7 +143,6 @@ function Game({ activated }: { activated: boolean }) {
 
             showCountButtons.current = 4 + score;
 
-            storage.set('score', score.toString());
             return score;
           });
         }
@@ -155,7 +151,6 @@ function Game({ activated }: { activated: boolean }) {
           playWrong();
           setScore((prev) => {
             const score = prev > 0.5 ? prev - 0.5 : 0;
-            storage.set('score', score.toString());
             return score;
           });
         }
@@ -168,6 +163,15 @@ function Game({ activated }: { activated: boolean }) {
 
     [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
+
+  useEffect(() => {
+    return () => {
+      fetch(`/api/score`, {
+        method: 'POST',
+        body: JSON.stringify({ score: score, user_id: userData?.user?.id }),
+      });
+    };
+  }, [score]);
 
   useEffect(() => {
     const listener = (state: ViewportState) => {
@@ -215,7 +219,6 @@ function Game({ activated }: { activated: boolean }) {
       clearInterval(progressInterval.current);
       setScore((prev) => {
         const score = prev > 0.5 ? prev - 0.5 : 0;
-        storage.set('score', score.toString());
         return score;
       });
       setButtons(generateButtons(showCountButtons.current));

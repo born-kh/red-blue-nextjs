@@ -8,6 +8,7 @@ export default function Home() {
   const view = useViewport();
   const [loading, setLoading] = useState(true);
   const [activated, setActivated] = useState(false);
+  const [score, setScore] = useState(0);
   const userData = useInitData();
   const getData = async () => {
     const response = await fetch(`/api/user?id=${userData?.user?.id}`, {
@@ -20,6 +21,7 @@ export default function Home() {
     getData()
       .then((data) => {
         setActivated(!!data?.user?.active);
+        setScore(data?.user?.score || 0);
       })
       .catch(() => {
         setActivated(false);
@@ -35,7 +37,7 @@ export default function Home() {
     <SplashScreen finishLoading={finishLoading} />
   ) : (
     <main className="flex relative min-h-screen flex-col items-center justify-between ">
-      <Game activated={activated} />
+      <Game activated={activated} score={score} />
     </main>
   );
 }

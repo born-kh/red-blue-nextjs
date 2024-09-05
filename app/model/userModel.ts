@@ -8,6 +8,7 @@ const UserSchema: Schema = new Schema({
   user_id: Number,
   active: Boolean,
   app_user_id: String,
+  score: Number,
 });
 
 const UserModel = models.User || model('User', UserSchema);
