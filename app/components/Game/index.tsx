@@ -284,9 +284,9 @@ function Game({ activated }: { activated: boolean }) {
 
                       <div
                         className="flex   cursor-pointer  items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
-                        onClick={() =>
-                          navigator.clipboard.writeText(userData?.user?.id?.toString() || '')
-                        }
+                        onClick={() => {
+                          navigator.clipboard.writeText(userData?.user?.id?.toString() || '');
+                        }}
                       >
                         Копировать
                       </div>
