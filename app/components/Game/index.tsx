@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import './game.css';
 
 import useSound from 'use-sound';
-import { useCloudStorage, useInitData, usePopup } from '@tma.js/sdk-react';
+import { useCloudStorage, useInitData, usePopup, useViewport } from '@tma.js/sdk-react';
 import Settings from '@/app/icons/Settings';
 import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
@@ -159,6 +159,19 @@ function Game({ activated }: { activated: boolean }) {
 
     [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
+  const view = useViewport();
+  useEffect(() => {
+    view?.on('change', (event) => {
+      popup.open({
+        title: '',
+        message: JSON.stringify(event),
+        buttons: [
+          { id: 'later', type: 'default', text: 'Позже' },
+          { id: 'later', type: 'default', text: 'Да' },
+        ],
+      });
+    });
+  }, []);
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
