@@ -20,7 +20,6 @@ const Referals = () => {
     if (userData?.user) {
       getData()
         .then((data) => {
-          console.log(data);
           setFriends(data.friends as any);
         })
         .catch((error) => {

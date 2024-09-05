@@ -13,7 +13,8 @@ if (!token) throw new Error('TELEGRAM_BOT_TOKEN environment variable not found.'
 const bot = new Bot(token);
 bot.command('start', async (ctx) => {
   const message = ctx.message;
-
+  console.log(ctx.chat);
+  console.log(ctx.message);
   await dbConnect();
 
   const findUser = await UserModel.findOne({ user_id: ctx.chat.id });
@@ -45,17 +46,16 @@ bot.command('start', async (ctx) => {
           active: true,
         });
         user.save();
-      } else {
-        const user = await UserModel.create({
-          username: ctx.chat.username,
-          first_name: ctx.chat.first_name,
-          last_name: ctx.chat.last_name,
-          user_id: ctx.chat.id,
-          active: false,
-        });
-        user.save();
       }
     }
+    const user = await UserModel.create({
+      username: ctx.chat.username,
+      first_name: ctx.chat.first_name,
+      last_name: ctx.chat.last_name,
+      user_id: ctx.chat.id,
+      active: false,
+    });
+    user.save();
   }
 
   ctx.reply('Welcome!');
