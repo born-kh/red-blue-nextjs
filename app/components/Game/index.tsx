@@ -5,6 +5,7 @@ import './game.css';
 
 import useSound from 'use-sound';
 import {
+  ViewportState,
   useClosingBehavior,
   useCloudStorage,
   useInitData,
@@ -166,28 +167,27 @@ function Game({ activated }: { activated: boolean }) {
   );
 
   useEffect(() => {
-    const listener = (isExpanded: boolean) => {
+    const listener = (state: ViewportState) => {
       popup.open({
         title: '',
-        message: String(isExpanded),
+        message: JSON.stringify(state),
         buttons: [
           { id: 'later', type: 'default', text: 'Позже' },
           { id: 'later', type: 'default', text: 'Да' },
         ],
       });
-      if (isExpanded) {
+      if (state.isExpanded) {
         stop();
       } else {
         playGame();
       }
     };
-    closingBehavior?.on('change:isConfirmationNeeded', listener);
-    view?.on('change:isExpanded', listener);
+
+    view?.on('change', listener);
     return () => {
-      closingBehavior?.off('change:isConfirmationNeeded', listener);
-      view?.off('change:isExpanded', listener);
+      // view?.off('change', listener);
     };
-  }, [playGame, stop, view, closingBehavior]);
+  }, [playGame, stop, view]);
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
