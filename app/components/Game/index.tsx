@@ -185,7 +185,7 @@ function Game({ activated }: { activated: boolean }) {
 
     view?.on('change', listener);
     return () => {
-      // view?.off('change', listener);
+      view?.off('change', listener);
     };
   }, [playGame, stop, view]);
   useEffect(() => {
