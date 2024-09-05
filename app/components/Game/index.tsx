@@ -4,7 +4,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import './game.css';
 
 import useSound from 'use-sound';
-import { useCloudStorage, useInitData, usePopup, useViewport } from '@tma.js/sdk-react';
+import {
+  useClosingBehavior,
+  useCloudStorage,
+  useInitData,
+  usePopup,
+  useViewport,
+} from '@tma.js/sdk-react';
 import Settings from '@/app/icons/Settings';
 import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
@@ -79,6 +85,8 @@ function Game({ activated }: { activated: boolean }) {
   const userData = useInitData();
   const popup = usePopup();
   const view = useViewport();
+  const closingBehavior = useClosingBehavior();
+
   const showCountButtons = useRef(4);
   const [showButtons, setShowButtons] = useState(true);
   const [effect, setEffect] = useState(false);
@@ -173,11 +181,13 @@ function Game({ activated }: { activated: boolean }) {
         playGame();
       }
     };
+    closingBehavior?.on('change:isConfirmationNeeded', listener);
     view?.on('change:isExpanded', listener);
     return () => {
+      closingBehavior?.off('change:isConfirmationNeeded', listener);
       view?.off('change:isExpanded', listener);
     };
-  }, [playGame, stop, view]);
+  }, [playGame, stop, view, closingBehavior]);
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
