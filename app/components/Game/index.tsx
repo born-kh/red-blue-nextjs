@@ -111,7 +111,7 @@ function Game({ activated }: { activated: boolean }) {
       setShowResult(true);
     }
     playGame();
-  }, [showCountButtons, activated]);
+  }, [showCountButtons, playGame, activated]);
 
   const handleCellClick = useCallback(
     (color: Button) => {
@@ -170,7 +170,7 @@ function Game({ activated }: { activated: boolean }) {
     return () => {
       view?.off('change:isExpanded', listener);
     };
-  }, []);
+  }, [playGame, stop]);
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
