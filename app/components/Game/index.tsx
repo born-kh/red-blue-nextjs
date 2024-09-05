@@ -8,9 +8,6 @@ import { useCloudStorage, useInitData, usePopup, useViewport } from '@tma.js/sdk
 import Settings from '@/app/icons/Settings';
 import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
-import CurrencyRub from '@/app/icons/CurrencyRub';
-import CopyIcon from '@/app/icons/CopyIcon';
-import { isAndroid } from 'react-device-detect';
 
 type Button = [string, string];
 
@@ -88,7 +85,7 @@ function Game({ activated }: { activated: boolean }) {
   const progressInterval = useRef<any>();
   const [score, setScore] = useState(0);
   const [playClick] = useSound('/click.mp3');
-  const [playGame] = useSound('/game_process.mp3', { volume: 0.1, loop: true });
+  const [playGame, { stop }] = useSound('/game_process.mp3', { volume: 0.1, loop: true });
   const [playSuccess] = useSound('/success.mp3', { volume: 0.2 });
   const [playWrong] = useSound('/wrong.mp3', { volume: 0.2 });
   const [gameStart, setGameStart] = useState(false);
@@ -160,17 +157,18 @@ function Game({ activated }: { activated: boolean }) {
     [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
   const view = useViewport();
+
   useEffect(() => {
-    view?.on('change', (event) => {
-      popup.open({
-        title: '',
-        message: JSON.stringify(event),
-        buttons: [
-          { id: 'later', type: 'default', text: 'Позже' },
-          { id: 'later', type: 'default', text: 'Да' },
-        ],
-      });
-    });
+    const listener = (isExpanded: boolean) => {
+      if (isExpanded) {
+        clearInterval(progressInterval.current);
+        stop();
+      } else {
+        playGame();
+      }
+    };
+    view?.on('change:isExpanded', listener);
+    view?.off('change:isExpanded', listener);
   }, []);
   useEffect(() => {
     if (score >= 1 && gameStart) {
