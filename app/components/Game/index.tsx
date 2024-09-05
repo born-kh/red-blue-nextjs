@@ -6,9 +6,13 @@ import './game.css';
 import useSound from 'use-sound';
 import {
   ViewportState,
+  subscribe,
+  useBiometryManager,
   useClosingBehavior,
   useCloudStorage,
+  useHapticFeedback,
   useInitData,
+  useInvoice,
   usePopup,
   useViewport,
 } from '@tma.js/sdk-react';
@@ -86,7 +90,6 @@ function Game({ activated }: { activated: boolean }) {
   const userData = useInitData();
   const popup = usePopup();
   const view = useViewport();
-  const closingBehavior = useClosingBehavior();
 
   const showCountButtons = useRef(4);
   const [showButtons, setShowButtons] = useState(true);
@@ -167,7 +170,6 @@ function Game({ activated }: { activated: boolean }) {
   );
 
   useEffect(() => {
-    closingBehavior.enableConfirmation();
     const listener = (state: ViewportState) => {
       if (state.isExpanded) {
         stop();
@@ -175,7 +177,7 @@ function Game({ activated }: { activated: boolean }) {
         playGame();
       }
     };
-    closingBehavior.on('change', (event) => {
+    subscribe((event) => {
       popup.open({
         title: '',
         message: JSON.stringify(event),
@@ -189,7 +191,8 @@ function Game({ activated }: { activated: boolean }) {
     return () => {
       view?.off('change', listener);
     };
-  }, [playGame, stop, view, closingBehavior]);
+  }, [playGame, stop, view]);
+
   useEffect(() => {
     if (score >= 1 && gameStart) {
       clearInterval(progressInterval.current);
