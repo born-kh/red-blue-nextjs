@@ -205,20 +205,18 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
       clearInterval(progressInterval.current);
       saveScore();
       setShowResult(true);
-      // popup
-      //   .open({
-      //     title: '',
-      //     message: 'Вы заработали 10 руб. Хотите выводить?',
-      //     buttons: [
-      //       { id: 'later', type: 'default', text: 'Позже' },
-      //       { id: 'later', type: 'default', text: 'Да' },
-      //     ],
-      //   })
-      //   .finally(() => {
-
-      //   });
     }
   }, [score, gameStart]);
+  useEffect(() => {
+    if (!activated && userScore === 0) {
+      popup.open({
+        title: 'Необходимо заработать 10 рублей.',
+        message: `За правильный ответ: +0.1 руб
+                  За провал: -0.5 руб`,
+        buttons: [{ id: 'yes', type: 'default', text: 'Да' }],
+      });
+    }
+  }, [userScore, activated]);
   useEffect(() => {
     if (progress <= 0 && gameStart) {
       playWrong();
