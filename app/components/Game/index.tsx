@@ -111,7 +111,7 @@ function Game({ activated }: { activated: boolean }) {
       setShowResult(true);
     }
     playGame();
-  }, [showCountButtons, playGame, activated]);
+  }, [showCountButtons, activated]);
 
   const handleCellClick = useCallback(
     (color: Button) => {
@@ -160,16 +160,7 @@ function Game({ activated }: { activated: boolean }) {
 
   useEffect(() => {
     const listener = (isExpanded: boolean) => {
-      popup.open({
-        title: '',
-        message: String(isExpanded),
-        buttons: [
-          { id: 'later', type: 'default', text: 'Позже' },
-          { id: 'later', type: 'default', text: 'Да' },
-        ],
-      });
       if (isExpanded) {
-        clearInterval(progressInterval.current);
         stop();
       } else {
         playGame();
