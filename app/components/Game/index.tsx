@@ -178,8 +178,8 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
   }, [saveScore, score]);
 
   useEffect(() => {
-    const listener = (state: ViewportState) => {
-      if (state.isExpanded) {
+    const listener = (isExpanded: boolean) => {
+      if (isExpanded) {
         stop();
       } else {
         playGame();
@@ -193,9 +193,9 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
       }
     };
     document?.addEventListener('visibilitychange', listenerVisibility);
-    view?.on('change', listener);
+    view?.on('change:isExpanded', listener);
     return () => {
-      view?.off('change', listener);
+      view?.off('change:isExpanded', listener);
       document?.removeEventListener('visibilitychange', listenerVisibility);
     };
   }, [playGame, stop, view]);
