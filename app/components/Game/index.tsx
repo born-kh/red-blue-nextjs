@@ -177,19 +177,18 @@ function Game({ activated }: { activated: boolean }) {
         playGame();
       }
     };
-    subscribe((event) => {
-      popup.open({
-        title: '',
-        message: JSON.stringify(event),
-        buttons: [
-          { id: 'later', type: 'default', text: 'Позже' },
-          { id: 'later', type: 'default', text: 'Да' },
-        ],
-      });
-    });
+    const listenerVisibility = () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        playGame();
+      }
+    };
+    document?.addEventListener('visibilitychange', listenerVisibility);
     view?.on('change', listener);
     return () => {
       view?.off('change', listener);
+      document?.removeEventListener('visibilitychange', listenerVisibility);
     };
   }, [playGame, stop, view]);
 
