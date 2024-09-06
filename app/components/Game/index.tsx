@@ -110,7 +110,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
       showCountButtons.current = 4 + userScore;
       setButtons(generateButtons(showCountButtons.current));
       setScore(userScore);
-      if (userScore >= 1) {
+      if (userScore >= 10) {
         setShowResult(true);
       }
     }
@@ -164,16 +164,16 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
     [showCountButtons, score, gameStart, playClick, playSuccess, playWrong]
   );
 
-  const saveScore = useCallback(() => {
+  const saveScore = useCallback((score: number) => {
     fetch(`/api/score`, {
       method: 'POST',
       body: JSON.stringify({ score: score, user_id: userData?.user?.id }),
     });
-  }, [score]);
+  }, []);
 
   useEffect(() => {
     return () => {
-      saveScore();
+      saveScore(score);
     };
   }, [saveScore, score]);
 
@@ -201,9 +201,9 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
   }, [playGame, stop, view]);
 
   useEffect(() => {
-    if (score >= 1 && gameStart) {
+    if (score >= 10 && gameStart) {
       clearInterval(progressInterval.current);
-      saveScore();
+      saveScore(10);
       setShowResult(true);
     }
   }, [score, gameStart]);
