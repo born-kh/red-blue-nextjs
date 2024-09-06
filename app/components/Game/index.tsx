@@ -165,10 +165,12 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
   );
 
   const saveScore = useCallback((score: number) => {
+    console.log(score);
     fetch(`/api/score`, {
       method: 'POST',
       body: JSON.stringify({ score: score, user_id: userData?.user?.id }),
     });
+    console.log(score);
   }, []);
 
   useEffect(() => {
