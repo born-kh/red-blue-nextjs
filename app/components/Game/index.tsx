@@ -323,11 +323,13 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
                   onClick={() => {
                     if (isIOS) {
                       utils.openLink(
-                        `https://play.google.com/store/apps/details?id=com.aysberg.teztez`
+                        `https://apps.apple.com/tj/app/teztez-logic-games/id6477746075`,
+                        { tryInstantView: true }
                       );
                     } else {
                       utils.openLink(
-                        `https://apps.apple.com/tj/app/teztez-logic-games/id6477746075`
+                        `https://play.google.com/store/apps/details?id=com.aysberg.teztez`,
+                        { tryInstantView: true }
                       );
                     }
                   }}
