@@ -322,11 +322,11 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
                   className="flex self-center cursor-pointer mt-2 items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
                   onClick={() => {
                     if (isIOS) {
-                      utils.openTelegramLink(
+                      utils.openLink(
                         `https://play.google.com/store/apps/details?id=com.aysberg.teztez`
                       );
                     } else {
-                      utils.openTelegramLink(
+                      utils.openLink(
                         `https://apps.apple.com/tj/app/teztez-logic-games/id6477746075`
                       );
                     }
