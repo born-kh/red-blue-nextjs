@@ -315,8 +315,8 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
                   Закрыть
                 </div>
                 <p className="text-sm self-center text-center mt-2">
-                  Введите свой код {userData?.user?.id} в течении 72 часов в игре в меню "Рефералы"
-                  чтобы получить свои деньги.
+                  Скачайте игру Тез-Тез и введите свой код {userData?.user?.id} в течении 72 часов в
+                  меню "Рефералы", чтобы получить свои деньги.
                 </p>
                 <div
                   className="flex self-center cursor-pointer mt-2 items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
