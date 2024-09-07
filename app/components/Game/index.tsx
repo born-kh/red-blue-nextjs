@@ -14,11 +14,13 @@ import {
   useInitData,
   useInvoice,
   usePopup,
+  useUtils,
   useViewport,
 } from '@tma.js/sdk-react';
 import Settings from '@/app/icons/Settings';
 import Hamster from '@/app/icons/Hamster';
 import Referals from '../Referals';
+import { isIOS } from 'react-device-detect';
 
 type Button = [string, string];
 
@@ -105,6 +107,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
 
   const [progress, setProgress] = useState(100);
   const [isWithdraw, setIsWithdraw] = useState(false);
+  const utils = useUtils();
   useEffect(() => {
     function checkScore() {
       showCountButtons.current = 4 + userScore;
@@ -317,7 +320,17 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
                 </p>
                 <div
                   className="flex self-center cursor-pointer mt-2 items-center w-fit border-2 border-[#43433b] rounded-full px-4 py-[2px] bg-[#43433b]/[0.6] max-w-64"
-                  onClick={() => setIsWithdraw(false)}
+                  onClick={() => {
+                    if (isIOS) {
+                      utils.openTelegramLink(
+                        `https://play.google.com/store/apps/details?id=com.aysberg.teztez`
+                      );
+                    } else {
+                      utils.openTelegramLink(
+                        `https://apps.apple.com/tj/app/teztez-logic-games/id6477746075`
+                      );
+                    }
+                  }}
                 >
                   Ок
                 </div>
