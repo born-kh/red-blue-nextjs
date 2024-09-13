@@ -110,7 +110,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
   const utils = useUtils();
   useEffect(() => {
     function checkScore() {
-      showCountButtons.current = 4 + userScore;
+      showCountButtons.current = 4 + userScore / 2;
       setButtons(generateButtons(showCountButtons.current));
       setScore(userScore);
       if (userScore >= 10) {
@@ -142,9 +142,9 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
         if (gameStart) {
           playSuccess();
           setScore((prev) => {
-            const score = Number((prev + 0.1).toFixed(1));
+            const score = Number((prev + 0.5).toFixed(1));
 
-            showCountButtons.current = 4 + score;
+            showCountButtons.current = 4 + score / 2;
 
             return score;
           });
@@ -218,7 +218,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
         title: '',
         message: `
         Необходимо заработать 10 рублей.
-    За правильный ответ: +0.1 руб
+    За правильный ответ: +0.5 руб
     За провал: -0.5 руб`,
         buttons: [{ id: 'yes', type: 'default', text: 'Ок' }],
       });
@@ -402,7 +402,7 @@ function Game({ activated, score: userScore }: { activated: boolean; score: numb
                       })}
                     </div>
                     <div className="flex flex-col items-center w-full">
-                      <p className="text-sm mt-4 text-center">За правильный ответ: +0.1 руб</p>
+                      <p className="text-sm mt-4 text-center">За правильный ответ: +0.5 руб</p>
                       <p className="text-sm text-center">За провал: -0.5 руб</p>
                     </div>
                   </>
