@@ -1,8 +1,4 @@
-// app/api/shorts-details/route.ts
 import { NextResponse } from 'next/server';
-
-// Функции parseViewsFromHtml, extractViewsFromJsonData и parseViewCount
-// можешь использовать свои из предыдущего кода
 
 export async function GET(request: Request) {
   try {
@@ -11,62 +7,43 @@ export async function GET(request: Request) {
 
     if (!youtubeLink) {
       return NextResponse.json({ error: 'youtubeLink is required' }, { status: 400 });
-  }
+    }
 
-  let videoId: string | null = null;
+    let videoId: string | null = null;
 
-  // Проверяем, если это ссылка на "Shorts"
-  if (youtubeLink.includes('youtube.com/shorts/')) {
-      const url = new URL(youtubeLink);
-      videoId = url.pathname.split('/').pop() || null; // Извлекаем ID из URL
-  } else {
-      // Стандартная ссылка на видео
-      const url = new URL(youtubeLink);
-      videoId = url.searchParams.get('v');
-  }
+    if (youtubeLink.includes('youtube.com/shorts/')) {
+      const urlObj = new URL(youtubeLink);
+      videoId = urlObj.pathname.split('/').pop() || null;
+    } else {
+      const urlObj = new URL(youtubeLink);
+      videoId = urlObj.searchParams.get('v');
+    }
 
-  if (!videoId) {
-      console.log('❌ Не удалось извлечь videoId из ссылки:', youtubeLink);
-      return { views: null, publishedAt: null };
-  }
+    if (!videoId) {
+      return NextResponse.json({ views: null, publishedAt: null }, { status: 200 });
+    }
 
-  console.log(`🔍 Обрабатываем видео: ${videoId}`);
-
-  // Сначала пробуем получить данные через HTML парсинг (для Shorts)
-  let realViews: number | null = null;
-  if (youtubeLink.includes('youtube.com/shorts/')) {
+    let realViews: number | null = null;
+    if (youtubeLink.includes('youtube.com/shorts/')) {
       realViews = await extractAllViewCounts(videoId);
-  }
+    }
 
-  // Затем получаем данные через API (для всех видео)
-  const apiKey = 'AIzaSyD-xB7hdB_7mRkKF3QoNankf0XXsqgcTWk';
-  const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${videoId}&fields=items(id,statistics(viewCount),snippet(publishedAt))&key=${apiKey}`;
-  
-  const response = await fetch(apiUrl);
-  if (!response.ok) {
-      console.error(`❌ API ошибка: ${response.status} для видео ${videoId}`);
-      // Если API не работает, но у нас есть данные из HTML, используем их
-      if (realViews) {
-          return { views: realViews, publishedAt: null };
-      }
-      throw new Error(`Failed to fetch: ${response.status}`);
-  }
+    const apiKey = 'AIzaSyD-xB7hdB_7mRkKF3QoNankf0XXsqgcTWk';
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${videoId}&fields=items(id,statistics(viewCount),snippet(publishedAt))&key=${apiKey}`;
 
-  const data = await response.json();
-  
-  if (!data.items || data.items.length === 0) {
-      console.log(`⚠️ Видео ${videoId} не найдено в API`);
-      return { views: realViews, publishedAt: null };
-  }
+    const response = await fetch(apiUrl);
+    let apiViews: number | null = null;
+    let publishedAt: string | null = null;
 
-  const apiViews = data.items[0]?.statistics?.viewCount ? parseInt(data.items[0].statistics.viewCount, 10) : null;
-  const publishedAt = data.items[0]?.snippet?.publishedAt || null;
+    if (response.ok) {
+      const data = await response.json();
+      apiViews = data.items?.[0]?.statistics?.viewCount ? parseInt(data.items[0].statistics.viewCount, 10) : null;
+      publishedAt = data.items?.[0]?.snippet?.publishedAt || null;
+    }
 
-  // Приоритет: HTML данные для Shorts, API данные для обычных видео
-  const finalViews = youtubeLink.includes('youtube.com/shorts/') && realViews ? realViews : apiViews;
+    const finalViews = youtubeLink.includes('youtube.com/shorts/') && realViews ? realViews : apiViews;
 
-  console.log(`✅ Видео ${videoId}: API views=${apiViews}, HTML views=${realViews}, Final views=${finalViews}`);
-    return NextResponse.json({ views:finalViews, publishedAt }, { status: 200 });
+    return NextResponse.json({ views: finalViews, publishedAt }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
